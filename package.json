@@ -1,0 +1,31 @@
+{
+  "name": "psycho-tech",
+  "version": "0.0.0",
+  "description": "Projet de redoublement, reprise et fusion des projets piscine 2016",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fournierclement/psycho-tech.git"
+  },
+  "keywords": [
+    "test",
+    "psycho",
+    "studient",
+    "mind",
+    "school"
+  ],
+  "author": "Fournier Clément",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fournierclement/psycho-tech/issues"
+  },
+  "homepage": "https://github.com/fournierclement/psycho-tech#readme",
+  "dependencies": {
+    "axios": "^0.15.3",
+    "express": "^4.14.1",
+    "lodash": "^4.17.4"
+  }
+}
