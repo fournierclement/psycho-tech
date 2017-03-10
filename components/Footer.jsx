@@ -12,12 +12,19 @@ export const Footer = ({user}) => (
           <h4 className="ui inverted header"> Plan du site </h4>
           <div className="ui inverted link list">
             <a href="" className="item"> Accueil </a>
-            { user || <a href="" className="item"> S\'enregistrer </a> }
-            { user && user.admin && <a href="" className="item"> Statistiques </a> }
-            { user && user.admin && <a href="" className="item"> Dashboard </a> }
-            { user && user.results && <a href="" className="item"> Questionnaire </a> }
-            { user && <a href="" className="item"> Mon Profil </a> }
-            { user ? <a href="" className="item"> Déconnexion </a> : <a href="" className="item"> Connexion </a> }
+            { user && ( !user.admin ? (
+              <a href="" className="item"> Questionnaire </a>
+            ) : (
+              <a href="" className="item"> Statistiques </a>
+              <a href="" className="item"> Dashboard </a>
+            ))}
+            { user ? (
+              <a href="" className="item"> Mon Profil </a>
+              <a href="" className="item"> Déconnexion </a>
+            ) : (
+              <a href="" className="item"> S\'enregistrer </a>
+              <a href="" className="item"> Connexion </a>
+            ))}
           </div>
         </div>
         <div className="nine wide column">
