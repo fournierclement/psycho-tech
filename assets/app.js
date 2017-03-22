@@ -9456,17 +9456,15 @@ var _Home = __webpack_require__(84);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Page = exports.Page = function Page(_ref) {
-  var pageTitle = _ref.pageTitle;
-
-  switch (pageTitle) {
+var Page = exports.Page = function Page(props) {
+  switch (props.pageTitle) {
     case "test":
       return _react2.default.createElement(Test, null);
     case "sessions":
       return _react2.default.createElement(Sessions, null);
     case "home":
     default:
-      return _react2.default.createElement(_Home.Home, null);
+      return _react2.default.createElement(_Home.Home, props);
   }
 };
 
@@ -9507,79 +9505,8 @@ var Footer = exports.Footer = function Footer(_ref) {
 
   return _react2.default.createElement(
     "footer",
-    { id: "Footer", className: "ui inverted vertical footer segment" },
-    _react2.default.createElement(
-      "div",
-      { className: "ui center aligned container" },
-      _react2.default.createElement(
-        "div",
-        { className: "ui stackable inverted divided grid" },
-        _react2.default.createElement(Options, null),
-        _react2.default.createElement(ShortWord, null)
-      ),
-      _react2.default.createElement("div", { className: "ui inverted section divider" }),
-      _react2.default.createElement("img", { src: "favicon.ico", className: "ui centered mini image" }),
-      _react2.default.createElement(InfoLegal, null)
-    )
-  );
-};
-
-var Options = function Options(_ref2) {
-  var modo = _ref2.modo;
-  return _react2.default.createElement(
-    "div",
-    { id: "Options", className: "seven wide column" },
-    _react2.default.createElement(
-      "h4",
-      { className: "ui inverted header" },
-      " WIP "
-    ),
-    _react2.default.createElement(
-      "div",
-      { className: "ui inverted link list" },
-      modo ? _react2.default.createElement(
-        "a",
-        { href: "", className: "item" },
-        " D\xE9connexion "
-      ) : _react2.default.createElement(
-        "a",
-        { href: "", className: "item" },
-        " Connexion "
-      )
-    )
-  );
-};
-
-var ShortWord = function ShortWord() {
-  return _react2.default.createElement(
-    "div",
-    { id: "ShortWord", className: "nine wide column" },
-    _react2.default.createElement(
-      "h4",
-      { className: "ui inverted header" },
-      " WIP "
-    ),
-    _react2.default.createElement(
-      "p",
-      null,
-      " coucou "
-    )
-  );
-};
-
-var InfoLegal = function InfoLegal() {
-  return _react2.default.createElement(
-    "div",
-    { id: "InfoLegal", className: "ui horizontal inverted small divided link list" },
-    _react2.default.createElement(
-      "div",
-      { className: "ui inverted section" },
-      _react2.default.createElement(
-        "p",
-        null,
-        " WIP "
-      )
-    )
+    { id: "Footer", className: "Footer" },
+    "Ceci est un footer..."
   );
 };
 
@@ -9599,17 +9526,93 @@ var _react = __webpack_require__(17);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Logger = __webpack_require__(85);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
 * @desc Bar on top of the pages
+* @type { leaf }
+* @param { String } id, id of the ressourced user.
+* @param { String } userGrp, type of user.
 */
 var HeadBar = exports.HeadBar = function HeadBar(_ref) {
-  var children = _ref.children;
+  var id = _ref.id,
+      userGrp = _ref.userGrp;
   return _react2.default.createElement(
     "div",
-    { id: "HeadBar", className: "HeadBar" },
-    children
+    { className: "HeadBar" },
+    _react2.default.createElement(
+      "div",
+      { className: "HeadBar-leftOption" },
+      userGrp === "Commoner" && _react2.default.createElement(
+        _Logger.Logger,
+        { value: "Admin connection" },
+        _react2.default.createElement(_Logger.EmailLog, null),
+        _react2.default.createElement(_Logger.PassLog, null)
+      ),
+      userGrp === "Admin" && _react2.default.createElement(
+        Redirect,
+        null,
+        " Dashboard "
+      ),
+      userGrp === "Student" && _react2.default.createElement(
+        Redirect,
+        null,
+        " resultat "
+      )
+    ),
+    _react2.default.createElement(
+      "div",
+      { className: "HeadBar-centralOption" },
+      userGrp === "Admin" ? _react2.default.createElement(
+        _Logger.Logger,
+        { value: "Ouvrir une Sessions" },
+        _react2.default.createElement(_Logger.SessionsLog, null),
+        _react2.default.createElement(_Logger.SessionsCodeLog, null),
+        _react2.default.createElement(_Logger.PassLog, null)
+      ) : _react2.default.createElement(
+        _Logger.Logger,
+        { value: "Passer le test" },
+        " "
+      )
+    ),
+    _react2.default.createElement(
+      "div",
+      { className: "HeadBar-rightOption" },
+      userGrp === "Admin" ? _react2.default.createElement(
+        Logout,
+        null,
+        " D\xE9connexion "
+      ) : _react2.default.createElement(
+        _Logger.Logger,
+        { value: "Revoir les r\xE9sultats d'une session" },
+        _react2.default.createElement(_Logger.SessionsLog, null),
+        _react2.default.createElement(_Logger.SessionsCodeLog, null),
+        _react2.default.createElement(_Logger.PassLog, null)
+      )
+    )
+  );
+};
+
+var Redirect = function Redirect(_ref2) {
+  var children = _ref2.children;
+  return _react2.default.createElement(
+    "a",
+    { href: "#" },
+    " ",
+    children,
+    " "
+  );
+};
+var Logout = function Logout(_ref3) {
+  var children = _ref3.children;
+  return _react2.default.createElement(
+    "a",
+    { href: "#" },
+    " ",
+    children,
+    " "
   );
 };
 
@@ -9633,70 +9636,17 @@ var _Footer = __webpack_require__(82);
 
 var _HeadBar = __webpack_require__(83);
 
-var _Logger = __webpack_require__(85);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
-
-var ids = {},
-    URL = "https://";
-
-var Home = exports.Home = function Home(_ref) {
-  _objectDestructuringEmpty(_ref);
-
+var Home = exports.Home = function Home(props) {
   return _react2.default.createElement(
     "div",
     { id: "Home" },
-    _react2.default.createElement(
-      _HeadBar.HeadBar,
-      null,
-      _react2.default.createElement(
-        _Logger.Logger,
-        { ids: ids, route: URL + "api/login/moderator" },
-        _react2.default.createElement(
-          "p",
-          null,
-          " Partie administrateur "
-        ),
-        _react2.default.createElement(_Logger.EmailLog, null),
-        _react2.default.createElement(_Logger.PassLog, null)
-      ),
-      _react2.default.createElement(
-        PassTest,
-        null,
-        _react2.default.createElement(
-          "span",
-          null,
-          " Passer le test "
-        )
-      ),
-      _react2.default.createElement(
-        _Logger.Logger,
-        { ids: ids, route: URL + "api/login/student" },
-        _react2.default.createElement(
-          "p",
-          null,
-          " Retrouver mes r\xE9sultats "
-        ),
-        _react2.default.createElement(_Logger.SessionsLog, null),
-        _react2.default.createElement(_Logger.SessionsCodeLog, null),
-        _react2.default.createElement(_Logger.PassLog, null)
-      )
-    ),
+    _react2.default.createElement(_HeadBar.HeadBar, props),
     _react2.default.createElement(
       Content,
       null,
       _react2.default.createElement(Wiki, null),
-      _react2.default.createElement(
-        PassTest,
-        null,
-        _react2.default.createElement(
-          "span",
-          null,
-          " Passer le test ! "
-        )
-      ),
       _react2.default.createElement(
         Explanation,
         null,
@@ -9708,38 +9658,55 @@ var Home = exports.Home = function Home(_ref) {
 };
 
 /**
-* @desc Central button open pass test modal
-*/
-var PassTest = function PassTest() {
-  return _react2.default.createElement("div", { className: "PassTest" });
-};
-
-/**
 * @desc content div meants for display text
+* @type { node }
 */
-var Content = function Content() {
-  return _react2.default.createElement("div", { className: "Content" });
+var Content = function Content(_ref) {
+  var children = _ref.children;
+  return _react2.default.createElement(
+    "div",
+    { className: "Content" },
+    children
+  );
 };
 
 /**
 * @desc Wiki to show wiki point
+* @type { node }
 */
-var Wiki = function Wiki() {
-  return _react2.default.createElement("div", { className: "Wiki" });
+var Wiki = function Wiki(_ref2) {
+  var children = _ref2.children;
+  return _react2.default.createElement(
+    "div",
+    { className: "Wiki" },
+    children
+  );
 };
 
 /**
 * @desc breive Explanation of the test mecanics
+* @type { node }
 */
-var Explanation = function Explanation() {
-  return _react2.default.createElement("div", { className: "Explanation" });
+var Explanation = function Explanation(_ref3) {
+  var children = _ref3.children;
+  return _react2.default.createElement(
+    "div",
+    { className: "Explanation" },
+    children
+  );
 };
 
 /**
 * @desc show/hide a panel
+* @type { node }
 */
-var Spoiler = function Spoiler() {
-  return _react2.default.createElement("div", { className: "Spoiler" });
+var Spoiler = function Spoiler(_ref4) {
+  var children = _ref4.children;
+  return _react2.default.createElement(
+    "div",
+    { className: "Spoiler" },
+    children
+  );
 };
 
 /***/ }),
@@ -9762,15 +9729,43 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /**
 * @desc Form Module to send ids data to the connection api route.
-* @param { Object } ids,
-* @param { String } route, api route call,
-*/
+* @type { node }
+* @param { String } value, title and button text.
+* @param { String } id, id of the caller.
+* @param { String } route, api route call.
+  Show a button, when trigger, show an hexagonal form, on load show a onLoad.
+*/ /**
+   export class Logger extends React.Component {
+   constructor ( props ) {
+     super( props );
+   }
+   render () {
+     const { value, children } = this.props;
+     return (
+       <span className="Logger">
+         <a href="#"> { value } </a>
+         { children }
+       </span>
+     )
+   }
+   onClick () {}
+   onSubmit () {}
+   }
+   **/
 var Logger = exports.Logger = function Logger(_ref) {
-  var ids = _ref.ids,
-      route = _ref.route;
-  return _react2.default.createElement("div", { className: "Logger" });
+  var value = _ref.value;
+  return _react2.default.createElement(
+    "a",
+    {
+      className: "Logger",
+      href: "./oki",
+      onClick: function onClick(e) {
+        return e.preventDefault() || window.history.pushState("coucou", "1", "oki");
+      }
+    },
+    value
+  );
 };
-
 /**
 * @desc Email input to capture email
 */
@@ -9790,8 +9785,7 @@ var PassLog = exports.PassLog = function PassLog() {
 * @param { Function } filter to pick only some sessions
 */
 var SessionsLog = exports.SessionsLog = function SessionsLog(_ref2) {
-  var filter = _ref2.filter,
-      sessions = _ref2.sessions;
+  var filter = _ref2.filter;
   return _react2.default.createElement("div", { className: "SessionsLog" });
 };
 
@@ -22051,7 +22045,11 @@ var _Page = __webpack_require__(80);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_Page.Page, null), document.getElementById('app'));
+var id = "nop";
+var userGrp = "Commoner";
+var pageTitle = "home";
+
+_reactDom2.default.render(_react2.default.createElement(_Page.Page, { id: id, userGrp: userGrp, pageTitle: pageTitle }), document.getElementById('app'));
 
 /***/ })
 /******/ ]);

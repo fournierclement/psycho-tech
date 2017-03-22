@@ -1,7 +1,7 @@
 # Describe the site map
 
 ### Navbar :
-- Accueil (page)
+- Accueil (page) (translate done, need refector)
 - Questionnaire [Studient]/(Page)
 - Statistiques [Admin]/(Page)
 - Dashboard [Admin]/(Page)
@@ -22,3 +22,8 @@
 - Nous contacter (page/ Popup ?)
 - Termes & Conditions (Page)
 - Politique de vie privée(Page)
+
+### Home :
+- Contact (Page/popup ?= Nous contacter)
+- Wiki Riasec (Page out =>)
+- Passer le test (popup connexion/ Page)

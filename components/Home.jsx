@@ -1,15 +1,12 @@
 import React from "react";
 import { Footer } from "./Footer.jsx";
 import { HeadBar } from "./HeadBar.jsx";
-import { Logger, EmailLog, PassLog, SessionsLog, SessionsCodeLog } from "./Logger.jsx";
-import { PassTest } from "./PassTest.jsx";
 
-export const Home = ({ id, userGrp }) => (
+export const Home = ( props ) => (
   <div id="Home">
-    <HeadBar {id, userGrp}  />
+    <HeadBar { ...props } />
     <Content>
       <Wiki />
-      <PassTest />
       <Explanation>
         <Spoiler />
       </Explanation>

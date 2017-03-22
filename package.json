@@ -4,7 +4,7 @@
   "description": "Projet de redoublement, reprise et fusion des projets piscine 2016",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pile": "babel ./componentsJSX/ --out-dir ./components/ && webpack"
   },
   "repository": {
     "type": "git",
@@ -17,9 +17,6 @@
     "mind",
     "school"
   ],
-  "scripts": {
-    "pile": "babel ./componentsJSX/ --out-dir ./components/ && webpack"
-  },
   "author": "Fournier Clément",
   "license": "MIT",
   "bugs": {
@@ -29,7 +26,8 @@
   "dependencies": {
     "express": "^4.14.1",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "webpack": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",

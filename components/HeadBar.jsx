@@ -1,5 +1,5 @@
 import React from "react";
-import Logger from "Logger.jsx"
+import { Logger, EmailLog, PassLog, SessionsLog, SessionsCodeLog } from "./Logger.jsx";
 
 /**
 * @desc Bar on top of the pages
@@ -11,7 +11,10 @@ export const HeadBar = ({ id, userGrp }) => (
   <div className="HeadBar">
     <div className="HeadBar-leftOption">
       { userGrp === "Commoner" && (
-        <Logger value="Admin connection"> </Logger>
+        <Logger value="Admin connection">
+          <EmailLog />
+          <PassLog />
+        </Logger>
       )}
       { userGrp === "Admin" && (
         <Redirect> Dashboard </Redirect>
@@ -22,17 +25,28 @@ export const HeadBar = ({ id, userGrp }) => (
     </div>
     <div className="HeadBar-centralOption">
       { userGrp === "Admin" ? (
-        <Logger value="Ouvrir une Sessions"> </Logger>
+        <Logger value="Ouvrir une Sessions">
+          <SessionsLog />
+          <SessionsCodeLog />
+          <PassLog />
+        </Logger>
       ) : (
-        <Logger> Passer le test </Logger>
+        <Logger value="Passer le test"> </Logger>
       )}
     </div>
     <div className="HeadBar-rightOption">
       { userGrp === "Admin" ? (
         <Logout> Déconnexion </Logout>
       ) : (
-        <Logger value="Revoir les résultats d'une session"> </Logger>
+        <Logger value="Revoir les résultats d'une session">
+          <SessionsLog />
+          <SessionsCodeLog />
+          <PassLog />
+        </Logger>
       )}
     </div>
   </div>
 )
+
+const Redirect = ({ children }) => (<a href="#"> { children } </a>)
+const Logout = ({ children }) => (<a href="#"> { children } </a>)
