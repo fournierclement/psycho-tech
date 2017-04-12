@@ -5,5 +5,5 @@ import routes from './routes';
 
 render(
   <Router routes={routes} history={browserHistory} />,
-  document.getElementById('root')
+  document.getElementById('app')
 );

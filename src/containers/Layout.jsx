@@ -5,10 +5,6 @@ export default class Layout extends Component {
 
   static fetchData() {} // will be used for server side rendering
 
-  static propTypes = {
-    children: React.PropTypes.object,
-  }
-
   render() {
     return (
       <div>

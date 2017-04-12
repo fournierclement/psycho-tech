@@ -1,4 +1,5 @@
 import React from 'react';
+import isDev from 'isdev';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '~/src/routes';
@@ -9,6 +10,7 @@ function handleRouter(res, props) {
   res
     .status(200)
     .render('index', {
+      build: isDev ? null : '/build',
       root: html,
     });
 }
