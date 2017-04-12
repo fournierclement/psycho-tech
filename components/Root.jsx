@@ -1,12 +1,9 @@
-import React from "react";
-import ReactDom from "react-dom";
-import { Page } from "./Page.jsx";
+import React from 'react';
+import { render } from 'react-dom';
+import { Router, browserHistory } from 'react-router';
+import { routes } from './routes.jsx';
 
-const id = "nop";
-const userGrp = "Commoner";
-const pageTitle = "home";
-
-ReactDom.render(
-  <Page id={ id } userGrp={ userGrp } pageTitle={ pageTitle } />,
+render(
+  <Router routes={ routes } history={ browserHistory } />,
   document.getElementById('app')
-)
+);

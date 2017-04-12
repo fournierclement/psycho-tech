@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 
 /**
@@ -27,9 +28,9 @@ export class Logger extends React.Component {
 }
 **/
 export const Logger = ({ value }) => (
-  <a className="Logger" href="./oki" >
+  <Link className="Logger" to="./oki" >
     { value }
-  </a>
+  </Link>
 )
 /**
 * @desc Email input to capture email

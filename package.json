@@ -4,6 +4,7 @@
   "description": "Projet de redoublement, reprise et fusion des projets piscine 2016",
   "main": "index.js",
   "scripts": {
+    "routes": "babel ./mods/routes.jsx ./mods/routes.js",
     "pile": "babel ./componentsJSX/ --out-dir ./components/ && webpack"
   },
   "repository": {
@@ -24,10 +25,13 @@
   },
   "homepage": "https://github.com/fournierclement/psycho-tech#readme",
   "dependencies": {
-    "express": "^4.14.1",
+    "babel-register": "^6.24.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "webpack": "^2.3.0"
+    "react-router": "^4.1.0",
+    "react-router-dom": "^4.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",

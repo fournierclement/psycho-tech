@@ -1,8 +1,8 @@
 module.exports = {
-  entry: './components/app.jsx',
+  entry: './components/Root.jsx',
   output: {
     filename: 'app.js',
-    path: 'assets'
+    path: './assets'
   },
   module: {
     rules: [
@@ -10,10 +10,10 @@ module.exports = {
         test: /\.jsx$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        options: { 
+        options: {
           presets: [
-            'react', 
-            'es2015' 
+            'react',
+            'es2015'
           ]
         }
       }
