@@ -1,15 +1,4 @@
-import dotenv from 'dotenv';
-import getenv from 'getenv';
 import path from 'path';
-
-// load env file
-dotenv.config();
-
-const Config = getenv.multi({
-  env: 'NODE_ENV',
-  host: 'SERVER_HOST',
-  port: 'SERVER_PORT',
-});
 
 const Dir = {
   src: path.resolve(__dirname),
@@ -19,4 +8,4 @@ const Dir = {
   static: path.resolve(__dirname, '..', 'public', 'static'),
 };
 
-export { Config, Dir };
+export { Dir };

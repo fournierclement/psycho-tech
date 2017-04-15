@@ -1,22 +1,26 @@
-module.exports = {
-  entry: './components/Root.jsx',
+import path from 'path';
+import { Dir } from './src/config';
+
+const Config = {
+  entry: [
+    'babel-polyfill',
+    path.join(Dir.src, 'client.jsx'),
+  ],
   output: {
+    path: path.join(Dir.public, 'build'),
     filename: 'app.js',
-    path: './assets'
+  },
+  resolve: {
+    modules: [Dir.src, "node_modules"],
+    extensions: ['.js', '.jsx', '.json'],
   },
   module: {
-    rules: [
-      {
-        test: /\.jsx$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            'react',
-            'es2015'
-          ]
-        }
-      }
-    ]
-  }
-}
+    loaders: [{
+      test: /\.jsx?$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/,
+    }],
+  },
+};
+
+export default Config;

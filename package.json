@@ -4,8 +4,12 @@
   "description": "Projet de redoublement, reprise et fusion des projets piscine 2016",
   "main": "index.js",
   "scripts": {
-    "routes": "babel ./mods/routes.jsx ./mods/routes.js",
-    "pile": "babel ./componentsJSX/ --out-dir ./components/ && webpack"
+    "clean": "rm -rf ./public/build",
+    "build:watch": "npm run clean && webpack -d --watch",
+    "build:dev": "npm run clean && webpack -d",
+    "build:prod": "npm run clean && webpack -p",
+    "server:dev": "npm run build:dev && node server.js",
+    "server:prod": "npm run build:prod &&  node server.js"
   },
   "repository": {
     "type": "git",
@@ -25,18 +29,9 @@
   },
   "homepage": "https://github.com/fournierclement/psycho-tech#readme",
   "dependencies": {
-    "babel-register": "^6.24.0",
-    "ejs": "^2.5.6",
-    "express": "^4.15.2",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-router": "^4.1.0",
-    "react-router-dom": "^4.1.0"
-  },
-  "devDependencies": {
-    "babel-core": "^6.24.0",
-    "babel-loader": "^6.4.1",
-    "babel-preset-es2015": "^6.24.0",
-    "babel-preset-react": "^6.23.0"
+    "path": "^0.12.7",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-router": "^3.0.5"
   }
 }
