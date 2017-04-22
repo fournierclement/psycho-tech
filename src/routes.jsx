@@ -3,12 +3,14 @@ import { Route, IndexRoute } from 'react-router';
 
 // Components
 import { PageLayout } from './containers/PageLayout';
-import { Home } from "./containers/Home";
+import { LogPage } from "./containers/Logger";
+import { Dashboard } from "./containers/Dashboard";
 import { SessionPage, SessionStart, QuestionBox, Question, Result } from "./containers/Session";
 
 export default (
   <Route path="/" component={ PageLayout }>
-    <IndexRoute component={ Home } />
+    <IndexRoute component={ LogPage } />
+
     <Route path="session/:sessionid" component={ SessionPage } >
       <IndexRoute component={ SessionStart } />
       <Route path="question" component={ QuestionBox }>
@@ -16,5 +18,7 @@ export default (
       </Route>
       <Route path="result" component={ Result } />
     </Route>
+
+    <Route path="admin" component={ Dashboard } />
   </Route>
 );
