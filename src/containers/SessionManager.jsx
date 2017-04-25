@@ -41,11 +41,15 @@ export const SessionManager = ({ sessions, pick, unpick, createSession, openSess
 )
 
 class SessionCreator extends React.Component {
+  constructor() {
+    super();
+    this.state = { error: "" };
+  }
   render() {
     const { create } = this.props;
     let label;
     let code;
-    let date = new Date();
+    let date = ((new Date().getDate()) + "/" + (new Date().getMonth()+1) + "/" + (new Date().getFullYear()));
     return (
       <tr>
         <td></td>
@@ -53,13 +57,17 @@ class SessionCreator extends React.Component {
         <td> <input type="text" ref={(input) => label = input } /> </td>
         <td> <input type="text" ref={(input) => code = input } /> </td>
         <td>
-          { date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() }
+          { date }
         </td>
-        <td></td>
+        <td><div className="SessionCreator-error" >{ this.state.error }</div></td>
         <td>
-          <button onClick={function(event) {
+          <button onClick={(event) => {
             event.preventDefault();
-            create(label.value, code.value);
+            create(
+              label.value,
+              code.value,
+              ( error ) => error && this.setState({ error: error.toString() })
+            );
             label.value = "";
             code.value = "";
           }} >
@@ -82,7 +90,7 @@ const Session = ({ open, label, code, date, student, color, click, closeSession,
     <td className="SessionPicker-2"> { label } </td>
     <td className="SessionPicker-3"> { code } </td>
     <td className="SessionPicker-4">
-      { date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() }
+      { date }
     </td>
     <td className="SessionManager-body-5"> { student } </td>
     <td>
@@ -94,7 +102,7 @@ const Session = ({ open, label, code, date, student, color, click, closeSession,
       </button>
       <button onClick={function(event) {
         event.stopPropagation();
-        deleteSession(label);
+        confirm(`delete ${label} ?`) && deleteSession(label);
       }} >
         { lang_Fr["deleteSession"] }
       </button>

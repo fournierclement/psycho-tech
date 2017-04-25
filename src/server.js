@@ -1,7 +1,7 @@
 import express from 'express';
 import serveStatic from 'serve-static';
 
-import api from "api";
+import api from "./api";
 import { isoMiddleware } from './middleware/iso';
 import { Dir } from './config';
 

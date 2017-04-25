@@ -1,40 +1,46 @@
 import React from "react";
 import { RadarChart } from "./RadarChart";
 import { SessionManager } from "./SessionManager";
+import axios from "axios";
 
-/*
-* should check connected?
+/**
+* @desc initialise a session object.
+* @param {String} label, name and id of the session.
+* @param {String} code, the password to enter the session.
 */
-
-const rollData = () => [
-  Math.round(Math.random()*100),
-  Math.round(Math.random()*100),
-  Math.round(Math.random()*100),
-  Math.round(Math.random()*100),
-  Math.round(Math.random()*100),
-  Math.round(Math.random()*100)
-];
 const newSession = (label, code) => ({
   open: true,
   label: label,
   code: code,
-  date: new Date(),
-  student: Math.round(Math.random()*50),
-  data: rollData(),
+  date: ((new Date().getDate()) + "/" + (new Date().getMonth()+1) + "/" + (new Date().getFullYear())),
+  student: 0,
+  data: [0,0,0,0,0,0],
 });
-
-let APIsessions = [
-  newSession("ig2017", "123"),
-  newSession("ig2018", "123"),
-  newSession("ig2019", "123"),
-];
 
 export class Dashboard extends React.Component {
   componentDidMount(){
+    //First
     this.fetchSessions();
+    //Then every 30 seconds
+    //this.actualizeSessions();
   }
-  // Select a session to be shown on the graph.
-  pickSession(session, callback) {
+
+/**
+* @desc Get all Sessions from distant API
+*/
+  fetchSessions( callback ) {
+    axios.get( "/api/sessions" )
+    .then( res => res.status !== 200 ? Promise.reject("error server") : (
+      this.setState({ sessions: res.data }, callback )
+    ))
+    .catch( error => console.error( error ) || callback(error, null))
+  }
+
+/**
+* @desc Select a session to be shown on the graph.
+* @param {Object} session, a single session picked.
+*/
+  pickSession( session ) {
     //Add new session to the pack;
     let newPickedSessions = [...this.state.pickedSessions];
     //get a Color
@@ -58,10 +64,14 @@ export class Dashboard extends React.Component {
     return this.setState({
       pickedSessions: newPickedSessions,
       sessions: newSessions
-    }, callback);
+    });
   }
-  // Select a session to not be shown anymore on the graph.
-  unpickSession(session, callback) {
+
+/**
+* @desc Un-select a session.
+* @param {Object} session, a single session unpicked
+*/
+  unpickSession(session) {
     let newPickedSessions = this.state.pickedSessions.filter(ses => ses.label !== session.label);
     let newSessions = this.state.sessions.map(ses => (
       ses.label === session.label ? (
@@ -71,62 +81,74 @@ export class Dashboard extends React.Component {
     return this.setState({
       pickedSessions: newPickedSessions,
       sessions: newSessions
-    }, callback);
+    });
   }
-  //Get Sessions from distant API
-  fetchSessions( callback ) {
-    //get /sessions
-    return this.setState({ sessions: APIsessions }, callback);
-  }
-  //Create Session and send it to the distant API
+
+/**
+* @desc Create a new session, send it to the Api and add it if it's ok
+* @param {String} label, name and id of the session.
+* @param {String} code, the password to enter the session.
+* @param {Function} callback, classic callback function(error).
+*/
   createSession( label, code, callback ) {
-    let session = newSession(label, code);
-    const onSuccess = (error) => {
-      let newSessions = [session, ...this.state.sessions];
-      return this.setState({ sessions: newSessions }, callback);
+    if ( !label || !code ) { callback("label/code invalides") }
+    else {
+      let session = newSession(label, code);
+      axios.post( "/api/sessions/", { session })
+      .then( res => this.setState({ sessions: [session, ...this.state.sessions] }, callback))
+      .catch( error => (
+        error
+        && error.response
+        && error.response.status == 403 ? Promise.reject( "Label déjà utilisé" ) : Promise.reject( error )))
+      .catch( error => console.error( error ) || callback(error))
     }
-    setTimeout((callback) => {
-      //post /sessions
-      return callback(null);
-    }, 1000, onSuccess);
   }
-  //Close a session with a distant API
-  closeSession( label, callback ) {
-    const onSuccess = (error) => {
+
+/**
+* @desc Close a session which become un-joinable for students.
+* @param {String} label, the name and id of the closed session.
+*/
+  closeSession( label ) {
+    const onSuccess = () => {
       let newSessions = this.state.sessions.map(ses => (
         ses.label !== label ? ses : Object.assign({}, ses, {open: false})
       ));
-      return this.setState({ sessions: newSessions }, callback);
+      return this.setState({ sessions: newSessions });
     }
-    setTimeout((callback) => {
-      //post sessions/label/
-      return callback(null);
-    }, 1000, onSuccess);
+    axios.post("/api/sessions/" + label, { open: false })
+    .then( onSuccess )
+    .catch( error => console.error( error ))
   }
-  //open a session with a distant API
-  openSession( label, callback ) {
+
+/**
+* @desc open a session which become re-joinable for students.
+* @param {String} label, the name and id of the opened session.
+*/
+  openSession( label ) {
     const onSuccess = (error) => {
       let newSessions = this.state.sessions.map(ses => (
         ses.label !== label ? ses : Object.assign({}, ses, {open: true})
       ));
-      return this.setState({ sessions: newSessions }, callback);
+      return this.setState({ sessions: newSessions });
     }
-    setTimeout((callback) => {
-      //post sessions/label/
-      return callback(null);
-    }, 1000, onSuccess);
+    axios.post("/api/sessions/" + label, { open: true })
+    .then( onSuccess )
+    .catch( error => console.error( error ))
   }
-  //delete a session with a distant api
-  deleteSession( label, callback) {
-    const onSuccess = (error) => {
+
+/**
+* @desc Delete a session on the api.
+* @param {String} label, the name and id of the deleted session.
+*/
+  deleteSession( label ) {
+    const onSuccess = () => {
       let newSessions = this.state.sessions.filter(ses => (ses.label !== label));
       this.unpickSession({ label });
-      return this.setState({ sessions: newSessions }, callback);
+      return this.setState({ sessions: newSessions });
     }
-    setTimeout((callback) => {
-      //delete sessions/label/
-      return callback(null);
-    }, 1000, onSuccess);
+    axios.delete( "/api/sessions/" + label )
+    .then( onSuccess )
+    .catch( error => console.error( error ))
   }
 
   constructor(){
