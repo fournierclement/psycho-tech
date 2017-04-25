@@ -1,7 +1,7 @@
 import express from 'express';
 import serveStatic from 'serve-static';
 
-
+import api from "api";
 import { isoMiddleware } from './middleware/iso';
 import { Dir } from './config';
 
@@ -15,7 +15,7 @@ app
 app
   .use('/build', serveStatic(Dir.build))
   .use('/static', serveStatic(Dir.static))
-  .use('/api', (req, res) => res.send(({msg: "coucou"}).Stringify()))
+  .use('/api', api)
   .use(isoMiddleware);
 
 app
