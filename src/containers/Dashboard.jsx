@@ -1,4 +1,5 @@
 import React from "react";
+import { browserHistory } from "react-router";
 import { RadarChart } from "./RadarChart";
 import { SessionManager } from "./SessionManager";
 import axios from "axios";
@@ -18,11 +19,23 @@ const newSession = (label, code) => ({
 });
 
 export class Dashboard extends React.Component {
-  componentDidMount(){
+  constructor(){
+    super();
+    this.state = {
+      //[Object] array of sessions
+      sessions: [],
+      //[Object] array of sessions
+      pickedSessions: []
+    };
+  }
+
+  componentDidMount() {
     //First
     this.fetchSessions();
     //Then every 30 seconds
-    //this.actualizeSessions();
+    // setInterval(() => {
+    //
+    // }, 30 * 1000 )
   }
 
 /**
@@ -79,6 +92,7 @@ export class Dashboard extends React.Component {
       ) : ( ses )
     ))
     return this.setState({
+      //
       pickedSessions: newPickedSessions,
       sessions: newSessions
     });
@@ -151,10 +165,6 @@ export class Dashboard extends React.Component {
     .catch( error => console.error( error ))
   }
 
-  constructor(){
-    super();
-    this.state = { sessions: [], pickedSessions: [] };
-  }
 
   render() {
     return (

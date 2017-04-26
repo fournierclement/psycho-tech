@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+import axios from "axios";
 
 // Components
 import { PageLayout } from './containers/PageLayout';

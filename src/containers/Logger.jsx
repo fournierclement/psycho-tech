@@ -49,22 +49,26 @@ const StudentLogger = () => (
 /**
 * Should connect.
 */
-const AdminLogger = () => (
-  <form className="AdminLogger">
-    <label>
-      { lang_Fr["email"] }
-      <input
-        type="email"
-        name="email"
-        />
-    </label>
-    <label>
-      { lang_Fr["password"] }
-      <input
-        type="password"
-        name="password"
-        />
-    </label>
-    <Link to="/admin" > connexion admin </Link>
-  </form>
-)
+class AdminLogger extends React.Component {
+  render() {
+  return (
+    <form className="AdminLogger">
+      <label>
+        { lang_Fr["email"] }
+        <input
+          type="email"
+          name="email"
+          />
+      </label>
+      <label>
+        { lang_Fr["password"] }
+        <input
+          type="password"
+          name="password"
+          />
+      </label>
+      <Link to="/admin" > connexion admin </Link>
+    </form>
+    )
+  }
+}
