@@ -2,7 +2,7 @@ import React from "react";
 import { Radar } from "react-chartjs";
 
 const lang_Fr = {
-  "labels": ["first", "second", "third", "forth", "fifth", "sixth"],
+  "labels": ["Realiste", "Inversigatif", "Artistique", "Social", "Entrepreneur", "Conventionnel"],
 }
 
 const chartOptions = {
@@ -14,7 +14,7 @@ const chartOptions = {
   responsive: true,
   scaleOverride: true,
 	scaleSteps: 4,
-	scaleStepWidth: 25,
+	scaleStepWidth: 10,
 	scaleStartValue: 0,
 }
 

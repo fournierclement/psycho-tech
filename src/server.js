@@ -5,6 +5,7 @@ import api from "./api";
 import { isoMiddleware } from './middleware/iso';
 import { Dir } from './config';
 
+process.env.SERVER = true;
 const app = express();
 
 // use ejs template engine on express

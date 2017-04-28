@@ -3,8 +3,10 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '../routes';
 
-function handleRouter(res, props) {
-  const html = renderToString(<RouterContext {...props} />);
+function handleRouter( res, props ) {
+  const html = renderToString(
+    <RouterContext { ...props } />
+  );
 
   res
     .status(200)
