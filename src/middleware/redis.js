@@ -1,0 +1,111 @@
+import Redis from "promise-redis";
+import { hash } from "./password";
+const statementSets = require( "./statementSets.json" );
+const redis = Redis().createClient();
+
+const SESSIONKEYS = "sessionKeys";
+const SESSIONS = "sessions/";
+const STUDENTS = "/students/";
+const STATEMENTS = "statements/";
+const ADMINLOGS = "admin/log/";
+
+//Those should be environemnts values.
+const ADMIN = "admin@admin", PASSWORD = "mdp";
+redis.set( ADMINLOGS + ADMIN, hash( PASSWORD ));
+//
+
+const setAdmin = ( id, pwd ) => redis.set( ADMINLOGS + id, pwd );
+const getAdmin = ( id ) => redis.get( ADMINLOGS + id );
+
+const newOneSession = ( label, session ) => (
+  redis.sadd( SESSIONKEYS, label )
+  .then( added => added === 1 || Promise.reject("exists"))
+  .then( added => redis.set(
+    SESSIONS + label,
+    JSON.stringify( session )
+  ))
+)
+
+const rmOneSession = ( label ) => (
+  redis.srem( SESSIONKEYS, label)
+  .then( removed => removed === 1 && redis.del( SESSIONS + label ))
+  .then( deleted => redis.keys( SESSIONS + label + STUDENTS + "*" ))
+  .then( studentKeys => Promise.all(
+    studentKeys.map( studentkey => redis.del( studentkey ))
+  ))
+)
+
+const getOneSession = ( label ) => (
+  redis.get( SESSIONS + label)
+  .then( JSON.parse )
+)
+
+const getAllSession = () => {
+  let sessions = [];
+  //Get all the keys we know we have.
+  return redis.smembers( "sessionKeys" )
+  .then( sessionKeys => Promise.all(
+    sessionKeys.map( sessionKey => (
+      redis.get( SESSIONS + sessionKey )
+      .then( session => sessions.push( JSON.parse( session )))
+    ))
+  ))
+  //Wait for the promises to end.
+  .then( done => sessions )
+}
+
+
+const setOneSession = ( label, session ) => (
+  redis.set(
+    SESSIONS + label,
+    JSON.stringify( session )
+  )
+)
+
+const getOneStudent = ( label, email ) => (
+  redis.get( SESSIONS + label + STUDENTS + email )
+  .then( JSON.parse )
+)
+
+const setOneStudent = ( label, email, student ) => (
+  redis.set( SESSIONS + label + STUDENTS + email, JSON.stringify( student ))
+)
+
+const setStatementSet = ( statementSet, statement ) => (
+  redis.set( STATEMENTS + statementSet, JSON.stringify( statement ))
+)
+
+const getStatementSet = ( statementSet ) => (
+  redis.get( STATEMENTS + statementSet )
+  .then( JSON.parse )
+)
+
+const getAllStatementSets = () => {
+  let statementSets = [];
+  return (
+    redis.keys(STATEMENTS + "*")
+    .then( statementKeys => Promise.all( statementKeys.map(( key, i) => (
+        redis.get( key ).then( statementSet => statementSets[ i ] = JSON.parse( statementSet ))
+      ))
+    )).then( done => statementSets )
+  );
+}
+
+statementSets.forEach(( statementSet, i ) => (
+  redis.set( STATEMENTS + (1 + 1*i), JSON.stringify( statementSet ))
+))
+
+module.exports = {
+  setAdmin,
+  getAdmin,
+  newOneSession,
+  rmOneSession,
+  getAllSession,
+  getOneSession,
+  setOneSession,
+  getOneStudent,
+  setOneStudent,
+  setStatementSet,
+  getStatementSet,
+  getAllStatementSets,
+}

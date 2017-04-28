@@ -1,0 +1,87 @@
+[
+  [
+    { "value": "a", "profile": "Realiste", "index": "0", "text": "Vous aimez avoir des activités à l’extérieur, travailler en plein air" },
+    { "value": "b", "profile": "Inversigatif", "index": "1", "text": "Vous aimez élargir vos connaissances par l’étude, pouvoir approfondir un sujet" },
+    { "value": "c", "profile": "Artistique", "index": "2", "text": "Vous aimez travailler de façon indépendante, sans méthode ni objectif structurés" },
+    { "value": "d", "profile": "Social", "index": "3", "text": "Vous aimez travailler avec d’autres personnes pour les informer" },
+    { "value": "e", "profile": "Entrepreneur", "index": "4", "text": "Vous admirez les personnes qui ont du pouvoir ou gagnent beaucoup d’argent" },
+    { "value": "f", "profile": "Conventionnel", "index": "5", "text": "Vous aimez travailler avec des chiffres" }
+  ], [
+    { "value": "a", "profile": "Social", "index": "3", "text": "Vous admirez les personnes qui travaillent pour soigner les autres" },
+    { "value": "b", "profile": "Conventionnel", "index": "5", "text": "Vous aimez une organisation claire et bien définie" },
+    { "value": "c", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez contribuer à atteindre les objectifs d’une organisation" },
+    { "value": "d", "profile": "Realiste", "index": "0", "text": "Vous aimez le sport, vous dépenser physiquement" },
+    { "value": "e", "profile": "Inversigatif", "index": "1", "text": "Vous aimez étudier les choses, les phénomènes ou les comportements" },
+    { "value": "f", "profile": "Artistique", "index": "2", "text": "Vous admirez les personnes qui ont des capacités artistiques" }
+  ], [
+    { "value": "a", "profile": "Social", "index": "3", "text": "Vous aimez travailler avec d’autres personnes pour les former, les entraîner" },
+    { "value": "b", "profile": "Artistique", "index": "2", "text": "Vous aimez les changements ou les situations imprévues" },
+    { "value": "c", "profile": "Conventionnel", "index": "5", "text": "Vous aimez ne faire qu’une seule chose à la fois et vous ne vous laissez pas distraire" },
+    { "value": "d", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez donner des ordres ou consignes et organiser l’activité des autres" },
+    { "value": "e", "profile": "Inversigatif", "index": "1", "text": "Vous aimez tirer vos propres conclusions de l’analyse d’une situation donnée" },
+    { "value": "f", "profile": "Realiste", "index": "0", "text": "Vous aimez conduire des véhicules ou faire fonctionner des machines" }
+  ], [
+    { "value": "a", "profile": "Realiste", "index": "0", "text": "Vous aimez fabriquer ou réparer des objets" },
+    { "value": "b", "profile": "Artistique", "index": "2", "text": "Vous aimez ne pas savoir précisément ce que vous avez à faire" },
+    { "value": "c", "profile": "Conventionnel", "index": "5", "text": "Vous aimez mettre en oeuvre des « bonnes pratiques » acquises par l’expérience" },
+    { "value": "d", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez faire preuve d’initiative et prendre des décisions rapides" },
+    { "value": "e", "profile": "Social", "index": "3", "text": "Vous aimez écouter, dialoguer, essayer de comprendre les autres" },
+    { "value": "f", "profile": "Inversigatif", "index": "1", "text": "Vous aimez vous fier à votre jugement pour décider comment faire les choses" }
+  ], [
+    { "value": "a", "profile": "Artistique", "index": "2", "text": "Vous aimez faire plusieurs activités en même temps, ou passer d’une action à l’autre" },
+    { "value": "b", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez décider de ce qui doit être fait" },
+    { "value": "c", "profile": "Social", "index": "3", "text": "Vous aimez rencontrer des gens nouveaux" },
+    { "value": "d", "profile": "Inversigatif", "index": "1", "text": "Vous aimez vérifier une conclusion par des tests ou des informations complémentaires" },
+    { "value": "e", "profile": "Conventionnel", "index": "5", "text": "Vous aimez appuyer vos conclusions sur des bases déjà prouvées" },
+    { "value": "f", "profile": "Realiste", "index": "0", "text": "Vous aimez bricoler, utiliser des outils tels que tournevis, ciseaux, pinces, etc.…" }
+  ], [
+    { "value": "a", "profile": "Inversigatif", "index": "1", "text": "Vous aimez résoudre les problèmes de façon rationnelle, étape par étape" },
+    { "value": "b", "profile": "Realiste", "index": "0", "text": "Vous aimez la nature, les plantes, les animaux…" },
+    { "value": "c", "profile": "Conventionnel", "index": "5", "text": "Vous aimez respecter les valeurs que vous vous êtes fixées" },
+    { "value": "d", "profile": "Social", "index": "3", "text": "Vous aimez faire un travail en commun avec d’autres" },
+    { "value": "e", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez relever des défis" },
+    { "value": "f", "profile": "Artistique", "index": "2", "text": "Vous aimez vous fier à votre intuition pour prendre des décisions" }
+  ], [
+    { "value": "a", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez convaincre les autres d’agir d’une certaine façon" },
+    { "value": "b", "profile": "Artistique", "index": "2", "text": "Vous aimez résoudre un problème sans avoir recours à une méthode logique" },
+    { "value": "c", "profile": "Inversigatif", "index": "1", "text": "Vous aimez prendre une décision après une réflexion, si possible logique" },
+    { "value": "d", "profile": "Conventionnel", "index": "5", "text": "Vous aimez suivre attentivement un plan pour atteindre le meilleur résultat possible" },
+    { "value": "e", "profile": "Social", "index": "3", "text": "Vous aimez écouter les autres et les conseiller sur la façon de résoudre leurs problèmes" },
+    { "value": "f", "profile": "Realiste", "index": "0", "text": "Vous aimez trouver une solution concrète, réaliste et simple aux problèmes" }
+  ], [
+    { "value": "a", "profile": "Inversigatif", "index": "1", "text": "Vous aimez concevoir ou améliorer les méthodes de travail" },
+    { "value": "b", "profile": "Realiste", "index": "0", "text": "Vous aimez utiliser votre « bon sens »" },
+    { "value": "c", "profile": "Social", "index": "3", "text": "Vous aimez rendre service, venir en aide à d’autres personnes" },
+    { "value": "d", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez répondre aux objections de vos interlocuteurs pour mieux les convaincre" },
+    { "value": "e", "profile": "Artistique", "index": "2", "text": "Vous aimez montrer votre originalité" },
+    { "value": "f", "profile": "Conventionnel", "index": "5", "text": "Vous aimez travailler avec soin pour obtenir un résultat parfait" }
+  ], [
+    { "value": "a", "profile": "Social", "index": "3", "text": "Vous aimez ou aimeriez animer des activités collectives, associatives…" },
+    { "value": "b", "profile": "Inversigatif", "index": "1", "text": "Vous aimez ou aimeriez étudier la physique, la biologie, ou la technologie" },
+    { "value": "c", "profile": "Realiste", "index": "0", "text": "Vous aimez démonter un appareil pour le réparer vous-même" },
+    { "value": "d", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez discuter avec un commerçant pour obtenir des réductions de prix" },
+    { "value": "e", "profile": "Artistique", "index": "2", "text": "Vous aimez exprimer vos idées, vos points de vue ou vos émotions" },
+    { "value": "f", "profile": "Conventionnel", "index": "5", "text": "Vous aimez rédiger un résumé, une lettre, un compte-rendu" }
+  ], [
+    { "value": "a", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez faire face aux situations urgentes ou imprévues" },
+    { "value": "b", "profile": "Conventionnel", "index": "5", "text": "Vous aimez vous occuper de démarches administratives ou d’ordre juridique" },
+    { "value": "c", "profile": "Social", "index": "3", "text": "Vous aimez ou aimeriez faire des reportages, écrire des articles, etc…" },
+    { "value": "d", "profile": "Inversigatif", "index": "1", "text": "Vous aimez chercher à comprendre et à expliquer le pourquoi des choses et des êtres" },
+    { "value": "e", "profile": "Artistique", "index": "2", "text": "Vous aimez imaginer des solutions qui sortent de l’ordinaire" },
+    { "value": "f", "profile": "Realiste", "index": "0", "text": "Vous aimez ou aimeriez utiliser un objet que vous avez fabriqué vous-même" }
+  ], [
+    { "value": "a", "profile": "Social", "index": "3", "text": "Vous aimez apprendre aux autres ce que vous savez" },
+    { "value": "b", "profile": "Realiste", "index": "0", "text": "Vous aimez collectionner des choses : timbres, cartes postales, pierres, etc.…" },
+    { "value": "c", "profile": "Conventionnel", "index": "5", "text": "Vous aimez passer une grande partie de votre temps sur des documents écrits" },
+    { "value": "d", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez ou aimeriez vendre des produits ou services" },
+    { "value": "e", "profile": "Inversigatif", "index": "1", "text": "Vous aimez vous servir d’un microscope ou autre appareil de mesure…" },
+    { "value": "f", "profile": "Artistique", "index": "2", "text": "Vous aimez ou aimeriez avoir des loisirs créatifs : peinture, musique…" }
+  ], [
+    { "value": "a", "profile": "Conventionnel", "index": "5", "text": "Vous aimez classer, ordonner des documents ou des objets" },
+    { "value": "b", "profile": "Entrepreneur", "index": "4", "text": "Vous aimez conduire une discussion, un débat" },
+    { "value": "c", "profile": "Social", "index": "3", "text": "Vous aimez échanger des idées avec les autres" },
+    { "value": "d", "profile": "Realiste", "index": "0", "text": "Vous aimez que ce que vous faites débouche sur des résultats concrets" },
+    { "value": "e", "profile": "Inversigatif", "index": "1", "text": "Vous aimez ou aimeriez mettre au point et réaliser des expériences scientifiques" },
+    { "value": "f", "profile": "Artistique", "index": "2", "text": "Vous aimez étudier ou inventer plusieurs solutions pour répondre à un problème" }
+  ]
+]
