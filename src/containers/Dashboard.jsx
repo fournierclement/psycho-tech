@@ -13,7 +13,9 @@ const newSession = (label, code) => ({
   open: true,
   label: label,
   code: code,
-  date: ((new Date().getDate()) + "/" + (new Date().getMonth()+1) + "/" + (new Date().getFullYear())),
+  date: (( new Date().getDate()) + "/"
+    + ( new Date().getMonth() + 1 ) + "/"
+    + ( new Date().getFullYear())),
   student: 0,
   data: [0,0,0,0,0,0],
 });
@@ -38,9 +40,9 @@ export class Dashboard extends React.Component {
     // }, 30 * 1000 )
   }
 
-/**
-* @desc Get all Sessions from distant API
-*/
+  /**
+  * @desc Get all Sessions from distant API
+  */
   fetchSessions( callback ) {
     axios.get( "/api/sessions" )
     .then( res => res.status !== 200 ? Promise.reject("error server") : (
@@ -49,10 +51,10 @@ export class Dashboard extends React.Component {
     .catch( error => console.error( error ) || callback(error, null))
   }
 
-/**
-* @desc Select a session to be shown on the graph.
-* @param {Object} session, a single session picked.
-*/
+  /**
+  * @desc Select a session to be shown on the graph.
+  * @param {Object} session, a single session picked.
+  */
   pickSession( session ) {
     //Add new session to the pack;
     let newPickedSessions = [...this.state.pickedSessions];
@@ -80,10 +82,10 @@ export class Dashboard extends React.Component {
     });
   }
 
-/**
-* @desc Un-select a session.
-* @param {Object} session, a single session unpicked
-*/
+  /**
+  * @desc Un-select a session.
+  * @param {Object} session, a single session unpicked
+  */
   unpickSession(session) {
     let newPickedSessions = this.state.pickedSessions.filter(ses => ses.label !== session.label);
     let newSessions = this.state.sessions.map(ses => (
@@ -98,12 +100,12 @@ export class Dashboard extends React.Component {
     });
   }
 
-/**
-* @desc Create a new session, send it to the Api and add it if it's ok
-* @param {String} label, name and id of the session.
-* @param {String} code, the password to enter the session.
-* @param {Function} callback, classic callback function(error).
-*/
+  /**
+  * @desc Create a new session, send it to the Api and add it if it's ok
+  * @param {String} label, name and id of the session.
+  * @param {String} code, the password to enter the session.
+  * @param {Function} callback, classic callback function(error).
+  */
   createSession( label, code, callback ) {
     if ( !label || !code ) { callback("label/code invalides") }
     else {
@@ -118,10 +120,10 @@ export class Dashboard extends React.Component {
     }
   }
 
-/**
-* @desc Close a session which become un-joinable for students.
-* @param {String} label, the name and id of the closed session.
-*/
+  /**
+  * @desc Close a session which become un-joinable for students.
+  * @param {String} label, the name and id of the closed session.
+  */
   closeSession( label ) {
     const onSuccess = () => {
       let newSessions = this.state.sessions.map(ses => (
@@ -134,10 +136,10 @@ export class Dashboard extends React.Component {
     .catch( error => console.error( error ))
   }
 
-/**
-* @desc open a session which become re-joinable for students.
-* @param {String} label, the name and id of the opened session.
-*/
+  /**
+  * @desc open a session which become re-joinable for students.
+  * @param {String} label, the name and id of the opened session.
+  */
   openSession( label ) {
     const onSuccess = (error) => {
       let newSessions = this.state.sessions.map(ses => (
@@ -150,10 +152,10 @@ export class Dashboard extends React.Component {
     .catch( error => console.error( error ))
   }
 
-/**
-* @desc Delete a session on the api.
-* @param {String} label, the name and id of the deleted session.
-*/
+  /**
+  * @desc Delete a session on the api.
+  * @param {String} label, the name and id of the deleted session.
+  */
   deleteSession( label ) {
     const onSuccess = () => {
       let newSessions = this.state.sessions.filter(ses => (ses.label !== label));

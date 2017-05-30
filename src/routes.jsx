@@ -33,7 +33,7 @@ const accessSession = (nextState, replaceState, callback) => (
     callback()
   ) : (
     //check if the user is logged
-    axios.get( "/api/sessions/" + nextState.params.label + "/student" )
+    axios.get( "/api/student/" + nextState.params.label + "/me" )
     .then( res => res.status === 200 && ( nextState.params.student = res.data ) && callback())
     .catch( error => (
       error.response

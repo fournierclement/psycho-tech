@@ -1,8 +1,8 @@
 import express from 'express';
 import serveStatic from 'serve-static';
 
-import api from "./api";
-import { isoMiddleware } from './middleware/iso';
+import api from "./routers/api";
+import { isoMiddleware } from './middlewares/iso';
 import { Dir } from './config';
 
 process.env.SERVER = true;

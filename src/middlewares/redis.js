@@ -12,14 +12,17 @@ const ADMINLOGS = "admin/log/";
 //Those should be environemnts values.
 const ADMIN = "admin@admin", PASSWORD = "mdp";
 redis.set( ADMINLOGS + ADMIN, hash( PASSWORD ));
-//
+
+/******************************************************************************/
+/********************************** SESSIONS **********************************/
+/******************************************************************************/
 
 const setAdmin = ( id, pwd ) => redis.set( ADMINLOGS + id, pwd );
 const getAdmin = ( id ) => redis.get( ADMINLOGS + id );
 
 const newOneSession = ( label, session ) => (
   redis.sadd( SESSIONKEYS, label )
-  .then( added => added === 1 || Promise.reject("exists"))
+  .then( added => added === 1 || Promise.reject("already exists"))
   .then( added => redis.set(
     SESSIONS + label,
     JSON.stringify( session )
@@ -62,6 +65,10 @@ const setOneSession = ( label, session ) => (
   )
 )
 
+/******************************************************************************/
+/********************************** STUDENTS **********************************/
+/******************************************************************************/
+
 const getOneStudent = ( label, email ) => (
   redis.get( SESSIONS + label + STUDENTS + email )
   .then( JSON.parse )
@@ -81,13 +88,13 @@ const getStatementSet = ( statementSet ) => (
 )
 
 const getAllStatementSets = () => {
-  let statementSets = [];
+  let statementSets = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
   return (
-    redis.keys(STATEMENTS + "*")
-    .then( statementKeys => Promise.all( statementKeys.map(( key, i) => (
-        redis.get( key ).then( statementSet => statementSets[ i ] = JSON.parse( statementSet ))
+    Promise.all( statementSets.map(( key, i) => (
+        redis.get( STATEMENTS + key )
+        .then( statementSet => statementSets[ i ] = JSON.parse( statementSet ))
       ))
-    )).then( done => statementSets )
+    ).then( done => statementSets )
   );
 }
 

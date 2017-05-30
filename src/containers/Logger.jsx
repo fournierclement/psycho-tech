@@ -27,7 +27,7 @@ class StudentLogger extends React.Component {
   }
   joinSession( label, code, email, callback ) {
     Promise.resolve( label && code && email || Promise.reject( "Tous les champs sont requis." ))
-    .then(ok => axios.post( "/api/sessions/" + label + "/student", { code, email }))
+    .then(ok => axios.post( "/api/student/" + label + "/", { code, email }))
     .then( res => res.status === 204 ? Promise.reject( "authorized" ) : res )
     .catch( error => (
       error.response

@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from "axios";
 import { Link } from "react-router";
-import { RadarChart } from "./RadarChart";
+import { RadarChart, ChartWithLegend } from "./RadarChart";
 
-const lang_Fr = {
+const lang_Fr =  {
   "session-top": "Session ",
   "sessionStart-text": "Choississez 3 affirmations pour chaque lot et ordonnez les de 1 pour la plus importante à 3.",
   "sessionStart-button": "Commencer",
@@ -24,41 +24,44 @@ const STATEMENTS_BY_SET = 6;
 export class SessionPage extends React.Component {
   constructor( props ){
     super( props );
-    this.state = { student: props.params.student || {}};
+    this.state = { student: props.params.student || {}, step: 0};
   }
-
-  nextStep() {
-    this.setState({
-      student: Object.assign(
-        {},
-        this.state.student,
-        { step: this.state.student.step + 1 }
-      )
-    })
+  componentDidMount() {
+    axios.get( "/api/statements/" )
+    .then( res1 => (
+      axios.get( "/api/student/" + this.props.params.label + "/me" )
+      .then(res2 => ({ statementSets: res1.data, student: res2.data }))
+    ))
+    .then( update => this.setState( update ))
   }
-
+  nextStep() { this.setState({ step: this.state.step + 1 })}
+  previousStep() { this.setState({ step: this.state.step - 1 })}
   render() {
     const { params } = this.props;
+    const closed = this.state.student.closed;
     let toProps = {
+      params: params,
       label: params.label,
-      statementSet: this.state.student.step,
-      nextStep: this.nextStep.bind( this )
+      step: this.state.step,
+      statementSets: this.state.statementSets,
+      nextStep: this.nextStep.bind( this ),
+      previousStep: this.previousStep.bind( this )
     }
     return (
       <div className="SessionPage" >
         <div className="Session-top">
-          { lang_Fr["session-top"] }{ params.label }, { this.state.student.email } :
+          { lang_Fr[ "session-top"] }{ params.label }, { this.state.student.email } :
         </div>
 
         {/* Presents the test */}
-        { (this.state.student.step === 0) && <Start { ...toProps } /> }
+        { !closed && (this.state.step === 0) && <Start { ...toProps } /> }
         {/* Show the statements sets */}
         {
-          (this.state.student.step > 0) && (this.state.student.step <= STATEMENT_SETS)
-          && <Checker { ...toProps } />
+          !closed && (this.state.step > 0) && (this.state.step <= STATEMENT_SETS)
+          && <Form { ...toProps } />
         }
         {/* Show the final result */}
-        { (this.state.student.step > STATEMENT_SETS) && <Result { ...toProps } /> }
+        { (closed || (this.state.step > STATEMENT_SETS)) &&  <Result { ...toProps } /> }
 
         <div className="Session-bot">
         </div>
@@ -67,7 +70,7 @@ export class SessionPage extends React.Component {
   }
 }
 
-export const Start = ({ nextStep }) => (
+const Start = ({ nextStep }) => (
   <div className="Session-start" >
     { lang_Fr["sessionStart-text"] }
     <button onClick={ nextStep } >
@@ -80,77 +83,87 @@ export const Start = ({ nextStep }) => (
 * @desc StatementBox show, submit and pass to the next statement.
 * Should send to the API each subimited statement along the user.
 */
-export class Checker extends React.Component {
+class Form extends React.Component {
   constructor( props ) {
     super( props );
     this.state = {
-      statementSet: [],
-      error: ""
+      error: "",
+      loading: false,
+      score: { a:0, b:0, c:0, d:0, e:0, f:0 },
     }
   }
-
-  componentDidMount() {
-    this.fetchStatementSet( this.props.statementSet )
+  componentWillReceiveProps(nextProps) { nextProps.step !== this.props.step && this.loadResponse( nextProps.step )}
+  componentDidMount() { this.loadResponse( this.props.step )}
+  loadResponse( step ){
+    //
+    axios.get( "/api/student/" + this.props.label + "/me/" + step )
+    .then(({ data }) => data || { a:0, b:0, c:0, d:0, e:0, f:0 })
+    .then( score => this.setState({ score: score, loading: false }))
   }
-
-  componentWillReceiveProps(nextProps) {
-    nextProps.statementSet !== this.props.statementSet && this.fetchStatementSet( nextProps.statementSet )
-  }
-
-  fetchStatementSet( statementSet ) {
-    return axios.get( "/api/statements/" + statementSet )
-    .then( res => this.setState({ statementSet: res.data }))
-  }
-
-  submitAnswer( radios, callback ) {
-    if ( radios.length != 3 ) { callback("Vous devez selectionner 3 réponses.")}
+  submitAnswer( callback ) {
+    let { score } = this.state;
+    if (Object.keys( score ).reduce((( a, b )=> a + 1*score[ b ]), 0) < 6) {
+      //if the cumulation of the key value isn't 1+2+3, send :
+      callback("Vous devez selectionner 3 réponses.")
+    }
     else {
-      let scores = { a:0, b:0, c:0, d:0, e:0, f:0 };
-      radios.forEach( radios => scores[ radios.value ] = 1*radios.name );
-      axios.post( "/api/sessions/" + this.props.label + "/student/" + this.props.statementSet, scores )
+      this.setState({ loading: true });
+      axios.post(
+        "/api/student/" + this.props.label + "/me/" + this.props.step,
+        score
+      )
       .then( res => res.status === 204 && this.props.nextStep() )
       .catch( callback )
     }
   }
-
+  check( row, column ) {
+    let { score } = this.state;
+    Object.keys( score )
+    .forEach( key => (
+      // Reset the hold choice
+      (( score[ key ] == column ) && ( score[ key ] = 0 ))
+      // And set the new one
+      || (( key == row ) && ( score[ key ] = column ))
+    ))
+    this.setState({ score: score })
+  }
   render() {
-    const { statementSet } = this.props;
-    let radios = [];
-    const actualise = ({ target }) => {
-      radios.forEach( input => (
-        ( input.value === target.value && input.name !== target.name )
-        && ( input.checked = false )
-      ));
-    }
+    const { statementSets, step, previousStep } = this.props;
     return (
       <form
         className="StatementSet"
         onSubmit={ event => this.handleSubmit( event )}
         >
         <div className="StatementSet-top">
-          { lang_Fr["StatementSet-top"] } { statementSet } / { STATEMENT_SETS };
+          { lang_Fr["StatementSet-top"] } { step } / { STATEMENT_SETS }
         </div>
-        <table className="StatementSet-table" >
-          <thead>
-            <tr>
-              <th> {lang_Fr["Statement-head-0"]} </th>
-              <th> {lang_Fr["Statement-head-1"]} </th>
-              <th> {lang_Fr["Statement-head-2"]} </th>
-              <th> {lang_Fr["Statement-head-3"]} </th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.state.statementSet.map(({ text, value }, i) =>
-              ( <tr className="statement" key={ i } >
-                  <td>{ value + ". " + text }</td>
-                  <td><label><input onChange={ actualise } ref={ input => radios.push( input )} type="radio" value={ value } name="3" /></label></td>
-                  <td><label><input onChange={ actualise } ref={ input => radios.push( input )} type="radio" value={ value } name="2" /></label></td>
-                  <td><label><input onChange={ actualise } ref={ input => radios.push( input )} type="radio" value={ value } name="1" /></label></td>
-                </tr> )
-            )}
-          </tbody>
-        </table>
+        { this.state.loading || (
+          <table className="StatementSet-table" >
+            <thead>
+              <tr>
+                <th> {lang_Fr["Statement-head-0"]} </th>
+                <th> {lang_Fr["Statement-head-1"]} </th>
+                <th> {lang_Fr["Statement-head-2"]} </th>
+                <th> {lang_Fr["Statement-head-3"]} </th>
+              </tr>
+            </thead>
+            <Checker
+              statementSet={ statementSets[ step - 1 ] }
+              score={ this.state.score }
+              onCheck={ this.check.bind( this )}
+              />
+          </table>
+        )}
         <div className="StatementSet-bot">
+          { (step > 1) && <input
+            type="button"
+            value="<- Précedent"
+            onClick={ event => {
+              event.preventDefault();
+              previousStep();
+            }}
+            />
+          }
           <div className="Checker-error">
             <b> { this.state.error } </b>
           </div>
@@ -159,10 +172,7 @@ export class Checker extends React.Component {
             value="Suivant ->"
             onClick={ event => {
               event.preventDefault();
-              this.submitAnswer(
-                radios.filter( radio => radio.checked ),
-                ( error ) => this.setState({ error: error.toString() })
-              );
+              this.submitAnswer(( error ) => this.setState({ error: error.toString() }));
             }}
             />
         </div>
@@ -171,23 +181,44 @@ export class Checker extends React.Component {
   }
 }
 
+/**
+* @desc The checker box which shwo the statements and previous responses
+*/
+const Checker = ({ statementSet, score, onCheck }) => (
+  <tbody className="Checker">
+    { statementSet.map(({ text, value }, i) =>
+      ( <tr className="statement" key={ i } >
+          <td>{ value + ". " + text }</td>
+          <td><label><input onClick={() => onCheck( value, 3 )} type="radio" value={ value } name="3" checked={ score[ value ] === 3 }/></label></td>
+          <td><label><input onClick={() => onCheck( value, 2 )} type="radio" value={ value } name="2" checked={ score[ value ] === 2 }/></label></td>
+          <td><label><input onClick={() => onCheck( value, 1 )} type="radio" value={ value } name="1" checked={ score[ value ] === 1 }/></label></td>
+        </tr> )
+    )}
+  </tbody>
+)
 
 class Result extends React.Component {
-  constructor() {
-    super();
+  constructor( props ) {
+    super( props );
     this.state = {
       student: {},
       session: {}
     };
   }
+  componentwillMount() {
+  }
   componentDidMount() {
-    axios.get( "/api/sessions/" + this.props.label + "/student/result" )
+    this.refreshResults()
+    setInterval( this.refreshResults.bind(this), 5000 )
+  }
+  refreshResults() {
+    axios.get( "/api/student/" + this.props.params.label + "/me/result" )
     .then(res => this.setState({ student: res.data.student, session: res.data.session }))
   }
   render () {
     return (
       <div className="Session-result">
-        <RadarChart
+        <ChartWithLegend
           sessions={[{
             label: this.state.session.label,
             data: this.state.session.data || [],

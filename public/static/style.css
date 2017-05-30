@@ -1,0 +1,115 @@
+html, body, body > div, .Page {
+  min-height: 100%;
+  height: 100%;
+  background-color: #6CA4C8;
+  margin: 0;
+  padding: 0;
+}
+
+.Page {
+  padding: 50px 0;
+}
+
+* {
+  font-size: 20px;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+a {
+  color: #FFFFFF;
+  margin: 0px 10px;
+}
+
+.HeadBar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 25px;
+  background-color: #000000;
+  box-shadow : 0 5px 5px black;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  margin: 25px 50px;
+}
+
+.LogPage {
+  display: flex;
+  height: 100%;
+}
+
+.LogPage > form {
+  padding: 25px;
+  margin: 0px 20px;
+  height: 90%;
+  min-width: 40%;
+  display: inline-block;
+  min-height: 50%;
+  box-shadow: 0 0 5px 1px #000;
+  background-color: white;
+  border: 2px solid black;
+  text-align: center;
+}
+
+input {
+  min-width: 30px;
+  min-height: 30px;
+  margin: 5px 20px;
+}
+
+form > * {
+  display: block;
+}
+.Logger-error {
+  text-decoration: underline;
+  color: rgb(200, 50, 50);
+}
+
+.SessionPage, .Dashboard {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  box-shadow: 0 0 5px 1px #000;
+  background-color: white;
+  border: 2px solid gray;
+  padding: 25px;
+  text-align: center;
+}
+.Session-top {
+  margin: 20px;
+  font-size: 30px;
+}
+
+.StatementSet {
+  text-align: left;
+}
+
+.Session-result {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.Result-pngs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.png {
+  max-width: 630px;
+  max-height: 594px;
+}
+
+.RadarChart {
+  width: 80%;
+}
+
+.chart-legend > li > span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+}
