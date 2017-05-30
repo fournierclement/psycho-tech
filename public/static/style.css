@@ -107,7 +107,7 @@ form > * {
   width: 80%;
 }
 
-.chart-legend > li > span {
+.RadarChart-legend > li > span {
   display: inline-block;
   width: 12px;
   height: 12px;

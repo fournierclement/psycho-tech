@@ -31,38 +31,23 @@ export const RadarChart = ({ sessions }) => (
   </div>
 )
 
-export class ChartWithLegend extends React.Component {
-  constructor( props ) {
-    super( props );
-    this.state = { legend: '' }
-  }
-
-  componentDidMount() {
-    let legend = this.refs.chart.getChart().generateLegend();
-    this.setState({ legend: legend });
-  }
-
-  render() {
-    const { sessions } = this.props;
-    return (
-      <div className="RadarChart">
-        <Radar
-          data = {({
-            labels: lang_Fr["labels"],
-            datasets: sessions != false ? sessions : [{ label:null, data:[0, 0, 0, 0, 0, 0] }]
-          })}
-          options = { chartOptions }
-          redraw
-          />
-        <ul className="RadarChart-legend">
-        { sessions.map(({ fillColor, label }) => (
-          <li>
-            <span style={{"background-color": session.fillColor}}></span>
-            <span>{ label }</span>
-          </li>
-        ))}
-        </ul>
-      </div>
-    );
-  }
-};
+export const ChartWithLegend = ({ sessions }) => (
+  <div className="RadarChart">
+    <Radar
+      data = {({
+        labels: lang_Fr["labels"],
+        datasets: sessions != false ? sessions : [{ label:null, data:[0, 0, 0, 0, 0, 0] }]
+      })}
+      options = { chartOptions }
+      redraw
+      />
+    <ul className="RadarChart-legend">
+    { sessions.map(({ fillColor, label }) => (
+      <li>
+        <span style={{"background-color": fillColor}}></span>
+        <span>{ label }</span>
+      </li>
+    ))}
+    </ul>
+  </div>
+);

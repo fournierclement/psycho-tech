@@ -76,6 +76,10 @@ const getOneStudent = ( label, email ) => (
 
 const setOneStudent = ( label, email, student ) => (
   redis.set( SESSIONS + label + STUDENTS + email, JSON.stringify( student ))
+  .then( student => (
+    redis.expire( SESSIONS + label + STUDENTS + email, 30 * 24 * 60 * 60 * 1000)
+    && student
+  ))
 )
 
 const setStatementSet = ( statementSet, statement ) => (

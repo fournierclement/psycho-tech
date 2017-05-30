@@ -24,13 +24,13 @@ const STATEMENTS_BY_SET = 6;
 export class SessionPage extends React.Component {
   constructor( props ){
     super( props );
-    this.state = { student: props.params.student || {}, step: 0};
+    this.state = { student: props.params.student || {}, step: props.params.student && props.params.student.closed ? 1 + STATEMENT_SETS : 0 };
   }
   componentDidMount() {
     axios.get( "/api/statements/" )
     .then( res1 => (
       axios.get( "/api/student/" + this.props.params.label + "/me" )
-      .then(res2 => ({ statementSets: res1.data, student: res2.data }))
+      .then(res2 => ({ statementSets: res1.data, student: res2.data, step: res2.data && res2.data.closed ? 1 + STATEMENT_SETS : 0  }))
     ))
     .then( update => this.setState( update ))
   }
@@ -54,14 +54,14 @@ export class SessionPage extends React.Component {
         </div>
 
         {/* Presents the test */}
-        { !closed && (this.state.step === 0) && <Start { ...toProps } /> }
+        {( this.state.step === 0 ) && <Start { ...toProps } /> }
         {/* Show the statements sets */}
         {
-          !closed && (this.state.step > 0) && (this.state.step <= STATEMENT_SETS)
+          ( this.state.step > 0 ) && (this.state.step <= STATEMENT_SETS)
           && <Form { ...toProps } />
         }
         {/* Show the final result */}
-        { (closed || (this.state.step > STATEMENT_SETS)) &&  <Result { ...toProps } /> }
+        {( this.state.step > STATEMENT_SETS ) &&  <Result { ...toProps } /> }
 
         <div className="Session-bot">
         </div>

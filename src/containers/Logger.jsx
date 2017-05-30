@@ -84,7 +84,7 @@ class StudentLogger extends React.Component {
           <b>{ this.state.error }</b>
         </div>
         <input
-          type="submit"
+          type="button"
           value="Rejoindre une session"
           onClick={ event => {
             event.preventDefault();
@@ -146,7 +146,7 @@ class AdminLogger extends React.Component {
         <b>{ this.state.error }</b>
         </div>
         <input
-          type="submit"
+          type="button"
           value="connexion admin"
           onClick={ event => {
             event.preventDefault();
