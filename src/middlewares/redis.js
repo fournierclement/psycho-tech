@@ -1,7 +1,7 @@
 import Redis from "promise-redis";
 import { hash } from "./password";
 const statementSets = require( "./statementSets.json" );
-const redis = Redis().createClient();
+const redis = Redis( process.env.REDIS_URL ).createClient();
 
 const SESSIONKEYS = "sessionKeys";
 const SESSIONS = "sessions/";
@@ -10,7 +10,7 @@ const STATEMENTS = "statements/";
 const ADMINLOGS = "admin/log/";
 
 //Those should be environemnts values.
-const ADMIN = "admin@admin", PASSWORD = "mdp";
+const ADMIN = process.env.ADMIN_KEY, PASSWORD = process.env.ADMIN_PASS;
 redis.set( ADMINLOGS + ADMIN, hash( PASSWORD ));
 
 /******************************************************************************/

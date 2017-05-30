@@ -5,11 +5,15 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf ./public/build",
-    "build:watch": "npm run clean && webpack -d --watch",
-    "build:dev": "npm run clean && webpack -d",
-    "build:prod": "npm run clean && webpack -p",
-    "server:dev": "npm run build:dev && node server.js",
-    "server:prod": "npm run build:prod &&  node server.js"
+    "build": "npm run clean && webpack -p",
+    "redis": "pm2 start redis-server",
+    "kill-redis": "pm2 delete 0",
+    "prod": "npm run server",
+    "server": "pm2 start server.js",
+    "kill-server":"pm2 delete 1",
+    "start": "npm run redis && npm run prod && pm2 log server|| npm run kill-all",
+    "rebuild": "npm run kill-server && npm run build && npm run server && pm2 log server || npm run kill-server",
+    "kill-all": "pm2 delete all"
   },
   "repository": {
     "type": "git",
@@ -33,6 +37,7 @@
     "body-parser": "^1.17.1",
     "chart.js": "^1.1.1",
     "cookie-session": "^2.0.0-beta.1",
+    "dotenv": "^4.0.0",
     "path": "^0.12.7",
     "pm2": "^2.4.6",
     "promise-redis": "0.0.5",
