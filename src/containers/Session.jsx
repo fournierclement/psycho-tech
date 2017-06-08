@@ -50,9 +50,6 @@ export class SessionPage extends React.Component {
         }
         {/* Show the final result */}
         {( this.state.step > STATEMENT_SETS ) &&  <Result { ...toProps } /> }
-
-        <div className="Session-bot">
-        </div>
       </div>
     )
   }
@@ -120,7 +117,7 @@ class Form extends React.Component {
       // And set the new one
       || (( key == row ) && ( score[ key ] = column ))
     ))
-    this.setState({ score: score })
+    this.setState({ score: score, error: "" })
   }
   render() {
     const { statementSets, step, previousStep } = this.props;
@@ -149,20 +146,23 @@ class Form extends React.Component {
               />
           </table>
         )}
+        <div className="Checker-error">
+          <b> { this.state.error } </b>
+        </div>
         <div className="StatementSet-bot">
-          { (step > 1) && <input
-            type="button"
-            value="<- Précedent"
-            onClick={ event => {
-              event.preventDefault();
-              previousStep();
-            }}
-            />
-          }
-          <div className="Checker-error">
-            <b> { this.state.error } </b>
-          </div>
-          <input
+          <span>
+            { (step > 1) && <input
+              type="button"
+              value="<- Précedent"
+              onClick={ event => {
+                event.preventDefault();
+                previousStep();
+              }}
+              />
+            }
+          </span>
+          <span>
+            <input
             type="submit"
             value="Suivant ->"
             onClick={ event => {
@@ -170,6 +170,7 @@ class Form extends React.Component {
               this.submitAnswer(( error ) => this.setState({ error: error.toString() }));
             }}
             />
+          </span>
         </div>
       </form>
     )
@@ -204,7 +205,10 @@ class Result extends React.Component {
   }
   componentDidMount() {
     this.refreshResults()
-    setInterval( this.refreshResults.bind(this), 5000 )
+    this.clock = setInterval( this.refreshResults.bind(this), 5000 )
+  }
+  componentwillUnmount() {
+    clearInterval( this.clock );
   }
   refreshResults() {
     axios.get( "/api/student/" + this.props.params.label + "/me/result" )

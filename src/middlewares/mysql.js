@@ -17,52 +17,41 @@ redis.set( ADMINLOGS + ADMIN, hash( PASSWORD ));
 /********************************** SESSIONS **********************************/
 /******************************************************************************/
 
+/**
+  session = {
+    open: Boolean,
+    label: String // unique,
+    code: String,
+    date: String,
+    student: int,
+    data: JSON.stringify([ 0, 0, 0, 0, 0, 0]),
+  }
+*/
 const setAdmin = ( id, pwd ) => redis.set( ADMINLOGS + id, pwd );
 const getAdmin = ( id ) => redis.get( ADMINLOGS + id );
 
 const newOneSession = ( label, session ) => (
-  redis.sadd( SESSIONKEYS, label )
-  .then( added => added === 1 || Promise.reject("already exists"))
-  .then( added => redis.set(
-    SESSIONS + label,
-    JSON.stringify( session )
-  ))
+  // Does the label exist ?
+  // Yes ? so don't and reject "already exists"
+  // Else add it
 )
 
 const rmOneSession = ( label ) => (
-  redis.srem( SESSIONKEYS, label)
-  .then( removed => removed === 1 && redis.del( SESSIONS + label ))
-  .then( deleted => redis.keys( SESSIONS + label + STUDENTS + "*" ))
-  .then( studentKeys => Promise.all(
-    studentKeys.map( studentkey => redis.del( studentkey ))
-  ))
+  // Remove the session
+  // Remove the belonged students
 )
 
 const getOneSession = ( label ) => (
-  redis.get( SESSIONS + label)
-  .then( JSON.parse )
+  // Get a session
 )
 
 const getAllSession = () => {
-  let sessions = [];
   //Get all the keys we know we have.
-  return redis.smembers( "sessionKeys" )
-  .then( sessionKeys => Promise.all(
-    sessionKeys.map( sessionKey => (
-      redis.get( SESSIONS + sessionKey )
-      .then( session => sessions.push( JSON.parse( session )))
-    ))
-  ))
-  //Wait for the promises to end.
-  .then( done => sessions )
 }
 
 
 const setOneSession = ( label, session ) => (
-  redis.set(
-    SESSIONS + label,
-    JSON.stringify( session )
-  )
+  // Update a session
 )
 
 /******************************************************************************/
@@ -70,16 +59,11 @@ const setOneSession = ( label, session ) => (
 /******************************************************************************/
 
 const getOneStudent = ( label, email ) => (
-  redis.get( SESSIONS + label + STUDENTS + email )
-  .then( JSON.parse )
+  // Get a student
 )
 
 const setOneStudent = ( label, email, student ) => (
-  redis.set( SESSIONS + label + STUDENTS + email, JSON.stringify( student ))
-  .then( student => (
-    redis.expire( SESSIONS + label + STUDENTS + email, 30 * 24 * 60 * 60 * 1000)
-    && student
-  ))
+  // Create a student
 )
 
 const setStatementSet = ( statementSet, statement ) => (

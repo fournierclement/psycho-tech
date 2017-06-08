@@ -1,27 +1,27 @@
 import React from "react";
 
 export const SessionManager = ({ sessions, pick, unpick, createSession, openSession, closeSession, deleteSession }) => (
-  <table className="SessionManager" >
+  <div className="SessionManager" >
+  <table>
     <SessionManagerHead />
-    <tbody className="SessionManager-body">
-      <SessionCreator create = { createSession } />
-      {[
-        ...sessions.filter( ses => ses.open && ses.color ),
-        ...sessions.filter( ses => !ses.open && ses.color ),
-        ...sessions.filter( ses => ses.open && !ses.color ),
-        ...sessions.filter( ses => !ses.open && !ses.color )
-      ].map((session, i) => (
-        <Session
-          key = {i}
-          click = { () => (session.color ? unpick(session) : pick(session)) }
-          {...session}
-          openSession = { openSession }
-          closeSession = { closeSession }
-          deleteSession = { deleteSession }
-          />
-      ))}
-    </tbody>
-  </table>
+    <SessionCreator create = { createSession } />
+        {[
+          ...sessions.filter( ses => ses.open && ses.color ),
+          ...sessions.filter( ses => !ses.open && ses.color ),
+          ...sessions.filter( ses => ses.open && !ses.color ),
+          ...sessions.filter( ses => !ses.open && !ses.color )
+        ].map((session, i) => (
+          <Session
+            key = {i}
+            click = { () => (session.color ? unpick(session) : pick(session)) }
+            {...session}
+            openSession = { openSession }
+            closeSession = { closeSession }
+            deleteSession = { deleteSession }
+            />
+        ))}
+    </table>
+  </div>
 )
 
 class SessionCreator extends React.Component {
@@ -36,27 +36,27 @@ class SessionCreator extends React.Component {
     let date = ((new Date().getDate()) + "/" + (new Date().getMonth()+1) + "/" + (new Date().getFullYear()));
     return (
       <tr>
-        <td></td>
-        <td> Nouvelle </td>
-        <td> <input type="text" ref={(input) => label = input } /> </td>
-        <td> <input type="text" ref={(input) => code = input } /> </td>
-        <td>
-          { date }
-        </td>
-        <td><div className="SessionCreator-error" >{ this.state.error }</div></td>
-        <td>
-          <button onClick={(event) => {
-            event.preventDefault();
-            create(
-              label.value,
-              code.value,
-              ( error ) => error && this.setState({ error: error.toString() })
-            );
-            label.value = "";
-            code.value = "";
-          }} >
-            Créer une Session
-          </button>
+      <td className="SessionCreator-0"></td>
+      <td className="SessionCreator-1"> Nouvelle </td>
+      <td className="SessionCreator-2"> <input type="text" ref={(input) => label = input } /> </td>
+      <td className="SessionCreator-3"> <input type="text" ref={(input) => code = input } /> </td>
+      <td className="SessionCreator-4">
+        { date }
+      </td>
+      <td className="SessionCreator-5"><div className="SessionCreator-error" >{ this.state.error }</div></td>
+      <td className="SessionCreator-6">
+        <button onClick={(event) => {
+          event.preventDefault();
+          create(
+            label.value,
+            code.value,
+            ( error ) => error && this.setState({ error: error.toString() })
+          );
+          label.value = "";
+          code.value = "";
+        }} >
+          Créer Session
+        </button>
         </td>
       </tr>
     )
@@ -86,23 +86,22 @@ const Session = ({ open, label, code, date, student, color, click, closeSession,
       </button>
       <button onClick={function(event) {
         event.stopPropagation();
-        confirm(`delete ${label} ?`) && deleteSession(label);
+        confirm(`Supprimer ${label} ?`) && deleteSession(label);
       }} >
-        Suppr. la Session ?
+        Suppr. Session
       </button>
     </td>
   </tr>
 )
 
 const SessionManagerHead = () => (
-  <thead className="SessionManagerHead">
-    <tr className="SessionManager-head-row">
-      <th className="SessionManager-head-0"> Affichée </th>
-      <th className="SessionManager-head-1"> Etat </th>
-      <th className="SessionManager-head-2"> Label de la Session </th>
-      <th className="SessionManager-head-3"> Code de la Session </th>
-      <th className="SessionManager-head-4"> Date de création </th>
-      <th className="SessionManager-head-5"> Population </th>
-    </tr>
-  </thead>
+  <tr className="SessionManager-head">
+    <th className="SessionManager-head-0"> Affichée </th>
+    <th className="SessionManager-head-1"> Etat </th>
+    <th className="SessionManager-head-2"> Label de la Session </th>
+    <th className="SessionManager-head-3"> Code de la Session </th>
+    <th className="SessionManager-head-4"> création </th>
+    <th className="SessionManager-head-5"> Pop. </th>
+    <th className="SessionManager-head-6"> Options </th>
+  </tr>
 )

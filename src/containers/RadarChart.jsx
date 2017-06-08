@@ -33,6 +33,14 @@ export const RadarChart = ({ sessions }) => (
 
 export const ChartWithLegend = ({ sessions }) => (
   <div className="RadarChart">
+    <div className="RadarChart-legend">
+      { sessions.map(({ fillColor, label }) => (
+        <div>
+          <span style={{"background-color": fillColor}}></span>
+          <span>{ label }</span>
+        </div>
+      ))}
+    </div>
     <Radar
       data = {({
         labels: lang_Fr["labels"],
@@ -41,13 +49,5 @@ export const ChartWithLegend = ({ sessions }) => (
       options = { chartOptions }
       redraw
       />
-    <ul className="RadarChart-legend">
-    { sessions.map(({ fillColor, label }) => (
-      <li>
-        <span style={{"background-color": fillColor}}></span>
-        <span>{ label }</span>
-      </li>
-    ))}
-    </ul>
   </div>
 );

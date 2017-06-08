@@ -42,7 +42,7 @@ router.post( "/:session", (req, res) => (
 
 /**
 * @desc get the student and his progression
-* @route GET api/students/:session/:student
+* @route GET api/student/:session/:student
 */
 router.get( "/:session/:student", (req, res) => {
   const student = req.session.student || req.params.student || req.body.student;

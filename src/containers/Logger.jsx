@@ -47,7 +47,7 @@ class StudentLogger extends React.Component {
     return (
       <form className="StudentLogger">
         <label>
-          Label de la session
+          <span> Label de la session </span>
           <input
             type="text"
             name="sessionLabel"
@@ -56,7 +56,7 @@ class StudentLogger extends React.Component {
             />
         </label>
         <label>
-          Code de la session
+          <span> Code de la session </span>
           <input
             type="password"
             name="sessionCode"
@@ -65,7 +65,7 @@ class StudentLogger extends React.Component {
             />
         </label>
         <label>
-          Email
+          <span> Email </span>
           <input
             type="email"
             name="email"
@@ -117,7 +117,7 @@ class AdminLogger extends React.Component {
     return (
       <form className="AdminLogger">
         <label>
-          Email
+          <span> Email </span>
           <input
             type="email"
             name="email"
@@ -126,7 +126,7 @@ class AdminLogger extends React.Component {
             />
         </label>
         <label>
-          Mot de passe
+          <span> Mot de passe </span>
           <input
             type="password"
             name="password"
