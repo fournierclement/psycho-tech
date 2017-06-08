@@ -1,11 +1,9 @@
 import { Router } from "express";
 
-import redis from "../middlewares/redis";
+import DB from "../middlewares/DB";
+import isAdmin from "../middlewares/isAdmin";
 
 const router = Router();
-const isAdmin = (req, res, next) => (
-  req.session.isAdmin ? next() : res.sendStatus(401)
-);
 
 /**
 * @desc Creation of a new session.
@@ -20,7 +18,7 @@ router.post( "/", isAdmin, (req, res) => {
   //Try insertion.
   Promise.resolve( newSession && newSession.label && newSession.code)
   .then( info => !info ? Promise.reject( INFOMISS ) : (
-    redis.newOneSession( newSession.label, newSession )
+    DB.newOneSession( newSession.label, newSession )
   ))
   .then( done => res.sendStatus( 200 ))
   .catch( error => error === EXISTS ? res.status(403).send(error) : Promise.reject(error))
@@ -34,7 +32,7 @@ router.post( "/", isAdmin, (req, res) => {
 * @respond { [Object] } array of sessions.
 */
 router.get( "/", isAdmin, (req, res) => {
-  redis.getAllSession()
+  DB.getAllSession()
   .then( sessions => res.json( sessions ))
   .catch( error => console.error( error ) || res.sendStatus(500))
 })
@@ -45,9 +43,9 @@ router.get( "/", isAdmin, (req, res) => {
 * @param {Object} will be merged with the current session.
 */
 router.post( "/:label", isAdmin, (req, res) => (
-  redis.getOneSession( req.params.label )
+  DB.getOneSession( req.params.label )
   .then( session => session || Promise.reject( "nop" ))
-  .then( session => redis.setOneSession( req.params.label, Object.assign(
+  .then( session => DB.setOneSession( req.params.label, Object.assign(
     {},
     session,
     req.body,
@@ -63,7 +61,7 @@ router.post( "/:label", isAdmin, (req, res) => (
 * @repond { Object } the session
 */
 router.get( "/:label", (req, res) => (
-  redis.getOneSession( req.params.label )
+  DB.getOneSession( req.params.label )
   .then( session => !session ? Promise.reject( "!exists" ) : res.send( session ).status( 200 ))
   .catch( error => error === "!exists" ? res.sendStatus( 404 ) : Promise.reject( error ))
   .catch( console.error )
@@ -74,7 +72,7 @@ router.get( "/:label", (req, res) => (
 * @route DELETE api/sessions/:label
 */
 router.delete( "/:label", isAdmin, (req, res) => (
-  redis.rmOneSession( req.params.label )
+  DB.rmOneSession( req.params.label )
   .then( done => res.sendStatus( 204 ))
   .catch( error => console.log( error ) || res.sendStatus( 500 ))
 ))

@@ -2,14 +2,6 @@ import React from "react";
 import { Link, browserHistory } from "react-router";
 import axios from "axios";
 
-const lang_Fr = {
-  "session-name":"Nom de la session",
-  "session-code":"code de la session",
-  "email": "adresse email",
-  "password":"Mot de passe"
-}
-
-
 export const LogPage = () => (
   <div className="LogPage">
     <StudentLogger />
@@ -55,7 +47,7 @@ class StudentLogger extends React.Component {
     return (
       <form className="StudentLogger">
         <label>
-          { lang_Fr["session-name"] }
+          Label de la session
           <input
             type="text"
             name="sessionLabel"
@@ -64,7 +56,7 @@ class StudentLogger extends React.Component {
             />
         </label>
         <label>
-          { lang_Fr["session-code"] }
+          Code de la session
           <input
             type="password"
             name="sessionCode"
@@ -73,7 +65,7 @@ class StudentLogger extends React.Component {
             />
         </label>
         <label>
-          { lang_Fr["email"] }
+          Email
           <input
             type="email"
             name="email"
@@ -125,7 +117,7 @@ class AdminLogger extends React.Component {
     return (
       <form className="AdminLogger">
         <label>
-          { lang_Fr["email"] }
+          Email
           <input
             type="email"
             name="email"
@@ -134,7 +126,7 @@ class AdminLogger extends React.Component {
             />
         </label>
         <label>
-          { lang_Fr["password"] }
+          Mot de passe
           <input
             type="password"
             name="password"

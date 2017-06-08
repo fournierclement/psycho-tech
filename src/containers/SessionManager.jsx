@@ -1,21 +1,5 @@
 import React from "react";
 
-const lang_Fr = {
-  "SessionManager-head-0": "Ajouter",
-  "SessionManager-head-1": "Etat",
-  "SessionPicker-1-close": "Fermée",
-  "SessionPicker-1-open": "Ouverte",
-  "SessionManager-head-2": "Label de la session",
-  "SessionManager-head-3": "Code de la session",
-  "SessionManager-head-4": "Date de creation",
-  "SessionManager-head-5": "Participants",
-  "createSession": "Creer une session",
-  "closeSession": "Fermer la session",
-  "openSession": "Ouvrir la session",
-  "deleteSession": "Supprimer la session",
-  "new": "Nouvelle",
-}
-
 export const SessionManager = ({ sessions, pick, unpick, createSession, openSession, closeSession, deleteSession }) => (
   <table className="SessionManager" >
     <SessionManagerHead />
@@ -53,7 +37,7 @@ class SessionCreator extends React.Component {
     return (
       <tr>
         <td></td>
-        <td> { lang_Fr["new"] }</td>
+        <td> Nouvelle </td>
         <td> <input type="text" ref={(input) => label = input } /> </td>
         <td> <input type="text" ref={(input) => code = input } /> </td>
         <td>
@@ -71,7 +55,7 @@ class SessionCreator extends React.Component {
             label.value = "";
             code.value = "";
           }} >
-            { lang_Fr["createSession"] }
+            Créer une Session
           </button>
         </td>
       </tr>
@@ -85,7 +69,7 @@ const Session = ({ open, label, code, date, student, color, click, closeSession,
       <input type = "checkbox" checked = { !!color } />
     </td>
     <td className="SessionPicker-1">
-      { open ? lang_Fr["SessionPicker-1-open"] : lang_Fr["SessionPicker-1-close"] }
+      { open ? "Ouverte" : "Close" }
     </td>
     <td className="SessionPicker-2"> { label } </td>
     <td className="SessionPicker-3"> { code } </td>
@@ -98,13 +82,13 @@ const Session = ({ open, label, code, date, student, color, click, closeSession,
         event.stopPropagation();
         !open ? openSession( label ) : closeSession( label );
       }} >
-        { !open ? lang_Fr["openSession"] : lang_Fr["closeSession"] }
+        { !open ? "Ouvrir" : "Clôturer" }
       </button>
       <button onClick={function(event) {
         event.stopPropagation();
         confirm(`delete ${label} ?`) && deleteSession(label);
       }} >
-        { lang_Fr["deleteSession"] }
+        Suppr. la Session ?
       </button>
     </td>
   </tr>
@@ -113,12 +97,12 @@ const Session = ({ open, label, code, date, student, color, click, closeSession,
 const SessionManagerHead = () => (
   <thead className="SessionManagerHead">
     <tr className="SessionManager-head-row">
-      <th className="SessionManager-head-0"> { lang_Fr["SessionManager-head-0"] } </th>
-      <th className="SessionManager-head-1"> { lang_Fr["SessionManager-head-1"] } </th>
-      <th className="SessionManager-head-2"> { lang_Fr["SessionManager-head-2"] } </th>
-      <th className="SessionManager-head-3"> { lang_Fr["SessionManager-head-3"] } </th>
-      <th className="SessionManager-head-4"> { lang_Fr["SessionManager-head-4"] } </th>
-      <th className="SessionManager-head-5"> { lang_Fr["SessionManager-head-5"] } </th>
+      <th className="SessionManager-head-0"> Affichée </th>
+      <th className="SessionManager-head-1"> Etat </th>
+      <th className="SessionManager-head-2"> Label de la Session </th>
+      <th className="SessionManager-head-3"> Code de la Session </th>
+      <th className="SessionManager-head-4"> Date de création </th>
+      <th className="SessionManager-head-5"> Population </th>
     </tr>
   </thead>
 )

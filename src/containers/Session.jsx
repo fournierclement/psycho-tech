@@ -3,18 +3,6 @@ import axios from "axios";
 import { Link } from "react-router";
 import { RadarChart, ChartWithLegend } from "./RadarChart";
 
-const lang_Fr =  {
-  "session-top": "Session ",
-  "sessionStart-text": "Choississez 3 affirmations pour chaque lot et ordonnez les de 1 pour la plus importante à 3.",
-  "sessionStart-button": "Commencer",
-  "StatementBox-top": "Statements",
-  "StatementBox-bot": "Statement suivante",
-  "Statement-head-0": "Affirmations",
-  "Statement-head-1": "1",
-  "Statement-head-2": "2",
-  "Statement-head-3": "3",
-}
-
 const STATEMENT_SETS = 12;
 const STATEMENTS_BY_SET = 6;
 
@@ -50,7 +38,7 @@ export class SessionPage extends React.Component {
     return (
       <div className="SessionPage" >
         <div className="Session-top">
-          { lang_Fr[ "session-top"] }{ params.label }, { this.state.student.email } :
+          Session { params.label }, { this.state.student.email } :
         </div>
 
         {/* Presents the test */}
@@ -72,10 +60,17 @@ export class SessionPage extends React.Component {
 
 const Start = ({ nextStep }) => (
   <div className="Session-start" >
-    { lang_Fr["sessionStart-text"] }
-    <button onClick={ nextStep } >
-    { lang_Fr["sessionStart-button"] }
-    </button>
+    <p> Vous trouverez 12 groupes de phrases, composées chacune de 6 propositions (A, B, C, D, E, F). </p>
+    <p> Dans chaque groupe de phrases, il s’agit de repérer et de classer par ordre de préférence les 3 propositions qui vous caractérisent le plus au travail. </p>
+    <p> 1 est la plus importante ou véridique, 3 la moins importante ou véridique. </p>
+    <p> Il n’y a pas ici ni bonnes, ni mauvaises réponses, elles seront toutes bonnes si elles expriment votre choix spontané. </p>
+    <p> Votre temps n’est pas limité. </p>
+    <p> Vos résulats resteront disponibles pendant un mois </p>
+    <p>
+      <button onClick={ nextStep } >
+        Commencer
+      </button>
+    </p>
   </div>
 )
 
@@ -135,16 +130,16 @@ class Form extends React.Component {
         onSubmit={ event => this.handleSubmit( event )}
         >
         <div className="StatementSet-top">
-          { lang_Fr["StatementSet-top"] } { step } / { STATEMENT_SETS }
+          Groupe { step } / { STATEMENT_SETS }
         </div>
         { this.state.loading || (
           <table className="StatementSet-table" >
             <thead>
               <tr>
-                <th> {lang_Fr["Statement-head-0"]} </th>
-                <th> {lang_Fr["Statement-head-1"]} </th>
-                <th> {lang_Fr["Statement-head-2"]} </th>
-                <th> {lang_Fr["Statement-head-3"]} </th>
+                <th> Propositions : </th>
+                <th> 1 </th>
+                <th> 2 </th>
+                <th> 3 </th>
               </tr>
             </thead>
             <Checker

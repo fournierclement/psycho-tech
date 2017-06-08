@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import redis from "../middlewares/redis";
+import DB from "../middlewares/DB";
 
 const router = Router();
 
@@ -14,10 +14,10 @@ const router = Router();
 * @param body {String} email, the id of the student.
 */
 router.post( "/:session", (req, res) => (
-  redis.getOneSession( req.params.session )
+  DB.getOneSession( req.params.session )
   .then( session => session ? session : Promise.reject( "noSession" ))
   .then( session => session.code === req.body.code ? session : Promise.reject( "wrongCode" ))
-  .then( session => ( redis.getOneStudent( req.params.session, req.body.email )
+  .then( session => ( DB.getOneStudent( req.params.session, req.body.email )
     // Session is close but the user exists and can watch his scores.
     .then( student => student ? (
       ( req.session.student = req.body.email ) && Promise.reject( "exists" )
@@ -29,8 +29,8 @@ router.post( "/:session", (req, res) => (
   .then( truth => createStudent( req.body.email , req.params.session ))
   // Store the student to session/label/student
   .then( student => (
-    redis.setOneStudent( req.params.session, req.body.email, student )
-    .then( isOk => isOk ? student : Promise.reject( Error( "Redis returned " + isOk )))
+    DB.setOneStudent( req.params.session, req.body.email, student )
+    .then( isOk => isOk ? student : Promise.reject( Error( "DB returned " + isOk )))
   ))
   .then( student => (req.session.student = student.email) && res.sendStatus( 204 ))
   .catch( error => error === "closed" ? res.sendStatus( 403 ) : Promise.reject( error ))
@@ -46,7 +46,7 @@ router.post( "/:session", (req, res) => (
 */
 router.get( "/:session/:student", (req, res) => {
   const student = req.session.student || req.params.student || req.body.student;
-  redis.getOneStudent( req.params.session, student )
+  DB.getOneStudent( req.params.session, student )
   .then( student => student ? res.send( student ).status( 200 ) : res.sendStatus( 404 ))
   .catch( error => console.error( error ) || res.sendStatus( 500 ))
 })
@@ -57,7 +57,7 @@ router.get( "/:session/:student", (req, res) => {
 */
 router.post( "/:session/:student/:statement_set", (req, res) => {
   const studentMail = req.session.student || req.params.student || req.body.student;
-  redis.getOneStudent( req.params.session, studentMail )
+  DB.getOneStudent( req.params.session, studentMail )
   // if exists, check if the student is still open and that the question isn't done yet
   .then( student => student || Promise.reject( "closed" ))
   .then( student => (
@@ -66,7 +66,7 @@ router.post( "/:session/:student/:statement_set", (req, res) => {
       updateStudentAnswers( student, req.params.statement_set, req.body )
     ) : ( Promise.reject( "closed" ))
   ))
-  .then( student => redis.setOneStudent( req.params.session, studentMail, student ))
+  .then( student => DB.setOneStudent( req.params.session, studentMail, student ))
   // store and ok
   .then( isOk => res.sendStatus( 204 ))
   .catch( error => error === "closed" ? res.sendStatus( 403 ) : Promise.reject( error ))
@@ -80,7 +80,7 @@ router.post( "/:session/:student/:statement_set", (req, res) => {
 router.get( "/:session/:student/:statment_set", (req, res, next) => (
   req.params.statment_set === "result" ? next() : (
   // get the student
-  redis.getOneStudent( req.params.session, req.session.student || req.params.student || req.body.student )
+  DB.getOneStudent( req.params.session, req.session.student || req.params.student || req.body.student )
   .then( student => student || Promise.reject( "doesntExist" ))
   .then( student => getStudentAnswer( student, req.params.statment_set ))
   .then( answer => res.json( answer ))
@@ -96,25 +96,25 @@ router.get( "/:session/:student/result", (req, res) => {
   // get the student
   const studentMail = req.session.student || req.params.student || req.body.student;
   let theStudent;
-  redis.getOneStudent( req.params.session, studentMail )
+  DB.getOneStudent( req.params.session, studentMail )
   // does the student is closed or must it be compiled ?
   .then( student => theStudent = student )
   .then( student => student ? student : Promise.reject("NotFound"))
   .then( student => student.closed ? Promise.reject("alreadyDone") : student )
   .then( student => (
-    redis.getAllStatementSets()
+    DB.getAllStatementSets()
     .then( statementSets => compileStudentAnswers( student, statementSets ))
     .then( scores => theStudent = Object.assign( {}, student, { closed: true, scores }))
   ))
-  .then( student => redis.setOneStudent( req.params.session, studentMail, student ))
-  .then( settled => redis.getOneSession( req.params.session ))
+  .then( student => DB.setOneStudent( req.params.session, studentMail, student ))
+  .then( settled => DB.getOneSession( req.params.session ))
   .then( session => session.open ? addStudentToSession( theStudent, session ) : Promise.reject( "closed" ))
   .then( session => (
-    redis.setOneSession( req.params.session, session )
+    DB.setOneSession( req.params.session, session )
     .then( done => res.json({ session, student: theStudent }))
   ))
   .catch( error => error !== "alreadyDone" ? Promise.reject( error ) : (
-    redis.getOneSession( req.params.session )
+    DB.getOneSession( req.params.session )
     .then( session => res.json({ session, student: theStudent }))
   ))
   .catch( error => error === "closed" ? res.sendStatus( 403 ) : Promise.reject( error ))

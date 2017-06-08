@@ -2,14 +2,14 @@ import Express from "express";
 import parser from "body-parser";
 import cookie from "cookie-session";
 
-import redis from "../middlewares/redis";
+import DB from "../middlewares/DB";
 import { hash, validate } from "../middlewares/password";
+import isAdmin from "../middlewares/isAdmin";
 
 import sessions from "./sessions";
 import students from "./students";
 
 const api = Express.Router();
-const isAdmin = (req, res, next) => ( req.session.isAdmin ? next() : res.sendStatus( 401 ));
 
 api.use(
   parser.urlencoded({ extended: false }), //req.params
@@ -24,17 +24,26 @@ api.use(
 * @param {String} password
 * GIVE A COOKIE
 */
-api.use( "/log", (req, res) => (
-  Promise.resolve( req )
-  .then(({ session, body }) => session.isAdmin ? Promise.reject( "connected" ) : body )
+api.post( "/log", (req, res) => (
+  Promise.resolve( req.body )
   .then(({ email, password }) => (
-    redis.getAdmin( email )
+    DB.getAdmin( email )
     .then( logPass => (( logPass && validate( logPass, password )) ? (
       ( req.session.isAdmin = true ) && res.send( true ).status( 200 )
     ) : ( res.sendStatus( 401 ))
     ))
   ))
-  .catch( error => error === "connected" ? res.send( true ).status( 200 ) : Promise.reject( error ))
+  .catch( error => console.error( error ) || res.sendStatus( 500 ))
+));
+
+/**
+* @desc Logging route for admin
+* @route GET api/log
+* Check the COOKIE
+*/
+api.get( "/log", (req, res) => (
+  Promise.resolve( req.session )
+  .then( session => session.isAdmin ? res.send( true ).status( 200 ) : res.sendStatus( 401 ))
   .catch( error => console.error( error ) || res.sendStatus( 500 ))
 ));
 
@@ -51,7 +60,7 @@ api.use( "/student", students );
 /******************************************************************************/
 
 api.get( "/statements/", (req, res) => (
-  redis.getAllStatementSets()
+  DB.getAllStatementSets()
   .then( statementSets => res.json( statementSets ))
   .catch( error => console.error( error ) || res.sendStatus( 500 ))
 ))
@@ -61,7 +70,7 @@ api.get( "/statements/", (req, res) => (
 * @route GET /api/questions/:questionid
 */
 api.get( "/statements/:statementSet", (req, res) => (
-  redis.getStatementSet( req.params.statementSet )
+  DB.getStatementSet( req.params.statementSet )
   .then( statementSet => statementSet ? res.status( 200 ).json( statementSet ) : res.sendStatus( 404 ))
   .catch( error => console.error( error ) || res.sendStatus( 500 ))
 ))
