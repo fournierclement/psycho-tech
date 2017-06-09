@@ -102,8 +102,16 @@ const getAllStatementSets = () => {
   );
 }
 
+const setStatement = ( set, index, text ) => {
+  let nbr = ( set * 1 + 1 )
+  return getStatementSet( nbr )
+  .then( set =>  ( set[ index ].text = text ) && set)
+  .then( set => redis.set( STATEMENTS + nbr, JSON.stringify( set )))
+}
+
 statementSets.forEach(( statementSet, i ) => (
-  redis.set( STATEMENTS + (1 + 1*i), JSON.stringify( statementSet ))
+  redis.exists( STATEMENTS + ( 1 + 1*i ))
+  .then( exists => exists && redis.set( STATEMENTS + (1 + 1*i), JSON.stringify( statementSet )))
 ))
 
 module.exports = {
@@ -117,6 +125,7 @@ module.exports = {
   getOneStudent,
   setOneStudent,
   setStatementSet,
+  setStatement,
   getStatementSet,
   getAllStatementSets,
 }

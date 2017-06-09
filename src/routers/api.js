@@ -67,11 +67,21 @@ api.get( "/statements/", (req, res) => (
 
 /**
 * @desc get the desired set of affirmations.
-* @route GET /api/questions/:questionid
+* @route GET /api/statements/:statementSet
 */
 api.get( "/statements/:statementSet", (req, res) => (
   DB.getStatementSet( req.params.statementSet )
   .then( statementSet => statementSet ? res.status( 200 ).json( statementSet ) : res.sendStatus( 404 ))
+  .catch( error => console.error( error ) || res.sendStatus( 500 ))
+))
+
+/**
+* @desc get the desired set of affirmations.
+* @route GET /api/statements/:statementSet
+*/
+api.post( "/statements/:statementSet/:statement", (req, res) => (
+  DB.setStatement( req.params.statementSet, req.params.statement, req.body.text )
+  .then( ok => res.sendStatus( 204 ))
   .catch( error => console.error( error ) || res.sendStatus( 500 ))
 ))
 

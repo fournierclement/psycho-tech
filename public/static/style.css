@@ -213,3 +213,19 @@ canvas {
 .SessionManager > table > tr > td > input {
   width: 90%;
 }
+
+/********************************* Statement **********************************/
+
+.StatementEditor {
+  box-shadow: 0 0 5px 1px #000;
+  background-color: white;
+  border: 2px solid gray;
+  padding: 25px;
+}
+.Statement {
+  margin: 5px 0;
+}
+.Statement > input {
+  width: 100%;
+  margin: 0;
+}

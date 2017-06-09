@@ -7,6 +7,7 @@ import { PageLayout } from './containers/PageLayout';
 import { LogPage } from "./containers/Logger";
 import { Dashboard } from "./containers/Dashboard";
 import { SessionPage, SessionStart, QuestionBox, Question, Result } from "./containers/Session";
+import { StatementEditor } from "./containers/StatementEditor";
 
 
 /**
@@ -47,9 +48,10 @@ const accessSession = (nextState, replaceState, callback) => (
 export default (
   <Route path="/" component={ PageLayout }>
     <IndexRoute component={ LogPage } />
-
     <Route path="/session/:label" component={ SessionPage } onEnter={ accessSession } />
 
-    <Route path="/admin" component={ Dashboard } onEnter={ isAdmin }/>
+    <Route path="/admin" component={ Dashboard } onEnter={ isAdmin } />
+    <Route path="/statements" component={ StatementEditor } onEnter={ isAdmin } />
+
   </Route>
 );

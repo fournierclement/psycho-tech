@@ -6,7 +6,7 @@ export class PageLayout extends React.Component {
   render() {
     return (
       <div className="Page" >
-        <HeadBar />
+        <HeadBar { ...this.props } />
         <div className="content">
           { this.props.children }
         </div>
