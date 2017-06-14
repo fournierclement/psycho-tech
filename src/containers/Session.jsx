@@ -207,7 +207,7 @@ class Result extends React.Component {
     this.refreshResults()
     this.clock = setInterval( this.refreshResults.bind(this), 5000 )
   }
-  componentwillUnmount() {
+  componentWillUnmount() {
     clearInterval( this.clock );
   }
   refreshResults() {

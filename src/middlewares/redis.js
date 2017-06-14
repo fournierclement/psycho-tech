@@ -1,5 +1,4 @@
 import Redis from "promise-redis";
-import { hash } from "./password";
 const statementSets = require( "./statementSets.json" );
 const redis = Redis( process.env.REDIS_URL ).createClient();
 
@@ -11,14 +10,11 @@ const ADMINLOGS = "admin/log/";
 
 //Those should be environemnts values.
 const ADMIN = process.env.ADMIN_KEY, PASSWORD = process.env.ADMIN_PASS;
-redis.set( ADMINLOGS + ADMIN, hash( PASSWORD ));
+const getAdmin = ( id ) => Promise.resolve(id === ADMIN && PASSWORD);
 
 /******************************************************************************/
 /********************************** SESSIONS **********************************/
 /******************************************************************************/
-
-const setAdmin = ( id, pwd ) => redis.set( ADMINLOGS + id, pwd );
-const getAdmin = ( id ) => redis.get( ADMINLOGS + id );
 
 const newOneSession = ( label, session ) => (
   redis.sadd( SESSIONKEYS, label )
@@ -82,10 +78,6 @@ const setOneStudent = ( label, email, student ) => (
   ))
 )
 
-const setStatementSet = ( statementSet, statement ) => (
-  redis.set( STATEMENTS + statementSet, JSON.stringify( statement ))
-)
-
 const getStatementSet = ( statementSet ) => (
   redis.get( STATEMENTS + statementSet )
   .then( JSON.parse )
@@ -115,7 +107,6 @@ statementSets.forEach(( statementSet, i ) => (
 ))
 
 module.exports = {
-  setAdmin,
   getAdmin,
   newOneSession,
   rmOneSession,
@@ -124,7 +115,6 @@ module.exports = {
   setOneSession,
   getOneStudent,
   setOneStudent,
-  setStatementSet,
   setStatement,
   getStatementSet,
   getAllStatementSets,

@@ -28,7 +28,7 @@ api.post( "/log", (req, res) => (
   Promise.resolve( req.body )
   .then(({ email, password }) => (
     DB.getAdmin( email )
-    .then( logPass => (( logPass && validate( logPass, password )) ? (
+    .then( logPass => (( logPass && logPass === password ) ? (
       ( req.session.isAdmin = true ) && res.send( true ).status( 200 )
     ) : ( res.sendStatus( 401 ))
     ))

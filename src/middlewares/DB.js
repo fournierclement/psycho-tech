@@ -1,12 +1,13 @@
 switch ( process.env.DB ) {
   case "MySQL":
+    require('./sequelize/BDSync');
     module.exports = require("./mysql") ;
     break
   case "Redis":
     module.exports = require("./redis");
     break
-  case "FileSystem":
   default:
-    module.exports = require("./fs");
+    console.error( "No database selected: MySQL, Redis" );
+    process.exit( 1 )
     break
 }
