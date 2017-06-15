@@ -14,6 +14,7 @@ student = {
 const Student = sequelize.define( "student", {
   closed: Sequelize.BOOLEAN,
   scores: Sequelize.STRING,
+  timestamp: Sequelize.BIGINT,
   email: {
     type: Sequelize.STRING,
     primaryKey: true,

@@ -3,13 +3,9 @@ import statementSet from "./statementSet";
 import student from "./student";
 const JsonSets = require( "../statementSets.json" );
 
-// session.sync({ force: true })
-student.sync({ force: true })
-// statement.sync({ force: true })
-
-session.sync()
-// student.sync()
 statementSet.sync()
+.then( () => session.sync())
+.then( () => student.sync())
 
 // Set the statementSet if exists
 .then( done => (
@@ -29,3 +25,5 @@ statementSet.sync()
     }))
   ))
 ))
+
+.catch( error => console.error( error ) || process.exit( 1 ))

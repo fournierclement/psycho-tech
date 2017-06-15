@@ -2,9 +2,19 @@ import Session from "./sequelize/session";
 import Student from "./sequelize/student";
 import StatementSet from "./sequelize/statementSet";
 
+const EXPIRATION = 1*process.env.EXPIRATION;
 //Those should be environemnts values.
 const ADMIN = process.env.ADMIN_KEY, PASSWORD = process.env.ADMIN_PASS;
 const getAdmin = ( id ) => Promise.resolve(id === ADMIN && PASSWORD);
+
+setInterval(() => (
+  Student.destroy({
+    where: { timestamp: { $lt: (
+      (new Date()).getTime() - EXPIRATION
+    )}}
+  })
+  .then( done => console.log( "student cleared : " + done ))
+), 1000 * 24 * 3600 )
 
 /******************************************************************************/
 /********************************** SESSIONS **********************************/
@@ -83,13 +93,15 @@ const getAllSession = () => (
 *   data: JSON.stringify([ 0, 0, 0, 0, 0, 0]),
 * }
 */
-const setOneSession = ( label, session ) => (
-  Session.update( Object.assign({},
+const setOneSession = ( label, session ) => {
+
+  return Session.update( Object.assign({},
     session,
     { data: JSON.stringify( session.data )}),
     { where: { label: label }}
   )
-)
+}
+
 
 /******************************************************************************/
 /********************************** STUDENTS **********************************/
@@ -129,6 +141,7 @@ const setOneStudent = ( label, email, student ) => {
     email: email,
     session: label,
     scores: JSON.stringify( student.scores ),
+    timestamp: (new Date()).getTime(),
   };
   student.answers && student.answers.forEach(( answer, i ) => (
     newStud[ "answer" + i ] = JSON.stringify( answer )

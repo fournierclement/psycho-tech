@@ -8,6 +8,8 @@ const STUDENTS = "/students/";
 const STATEMENTS = "statements/";
 const ADMINLOGS = "admin/log/";
 
+const EXPIRATION = 1*process.env.EXPIRATION;
+
 //Those should be environemnts values.
 const ADMIN = process.env.ADMIN_KEY, PASSWORD = process.env.ADMIN_PASS;
 const getAdmin = ( id ) => Promise.resolve(id === ADMIN && PASSWORD);
@@ -73,7 +75,7 @@ const getOneStudent = ( label, email ) => (
 const setOneStudent = ( label, email, student ) => (
   redis.set( SESSIONS + label + STUDENTS + email, JSON.stringify( student ))
   .then( student => (
-    redis.expire( SESSIONS + label + STUDENTS + email, 30 * 24 * 60 * 60 * 1000)
+    redis.expire( SESSIONS + label + STUDENTS + email, EXPIRATION )
     && student
   ))
 )
