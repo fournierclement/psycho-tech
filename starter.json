@@ -1,0 +1,7 @@
+{
+  "script"          : "server.js",
+  "error_file"      : "errors.log",
+  "out_file"        : "output.log",
+  "merge_logs"      : true,
+  "log_date_format" : "YYYY-MM-DD HH:mm Z"
+}

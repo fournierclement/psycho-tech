@@ -23,4 +23,8 @@ app
     .listen(
       process.env.PORT,
       "localhost",
-(err) => console.log(err || "On air"));
+(err) => console.log(err ||
+  "#########################################"
+ + "#######  SERVER STARTING ON " + process.env.PORT + "  #######"
+ + "#########################################"
+));
